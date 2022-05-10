@@ -28,26 +28,41 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Container(
-                          color: Colors.brown,
-                          child: const Text('邮箱'),
-                        ),
-                        Container(
-                          color: Colors.brown,
-                          child: const Text('密码'),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Container(
+                            color: Colors.brown,
+                            child: const Text('邮箱'),
+                          ),
+                          Container(
+                            color: Colors.brown,
+                            child: const Text('密码'),
+                          ),
+                        ],
+                      ),
                     ),
-                    Container(
-                      color: Colors.brown,
-                      child: const Text('登录按钮'),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
+                      child: Container(
+                        color: Colors.brown,
+                        child: const Text('登录按钮'),
+                      ),
                     ),
-                    Container(
-                      color: Colors.brown,
-                      child: const Text('注册提示'),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
+                      child: Container(
+                        color: Colors.brown,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text('没有账号? '),
+                            Text('立即注册')
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
