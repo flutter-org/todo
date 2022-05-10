@@ -8,11 +8,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late bool canLogin;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+    canLogin = false;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       debugDumpFocusTree();
+    });
+  }
+
+  void _checkInputValid(String _) {
+    bool isInputValid = _emailController.text.contains('@') && _passwordController.text.length >= 6;
+    if (isInputValid == canLogin) {
+      return;
+    }
+    setState(() {
+      canLogin = isInputValid;
     });
   }
 
@@ -49,20 +64,24 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(left: 24, right: 24, bottom: 12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: const [
+                            children: [
                               TextField(
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: '请输入邮箱',
                                   labelText: '邮箱',
                                 ),
                                 textInputAction: TextInputAction.next,
+                                onChanged: _checkInputValid,
+                                controller: _emailController,
                               ),
                               TextField(
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: '请输入六位以上的密码',
                                   labelText: '密码',
                                 ),
                                 obscureText: true,
+                                onChanged: _checkInputValid,
+                                controller: _passwordController,
                               )
                             ],
                           ),
@@ -74,10 +93,12 @@ class _LoginPageState extends State<LoginPage> {
                               backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(69, 202, 181, 11)),
                             ),
                             child: const Text(
-                              '登录按钮',
+                              '登录',
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              if (!canLogin) return;
+                            },
                           ),
                         ),
                         Padding(
