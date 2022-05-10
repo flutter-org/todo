@@ -27,51 +27,57 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Expanded(
-              child: Container(
-                color: Colors.red,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: const [
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: '请输入邮箱',
-                              labelText: '邮箱',
-                            ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, bottom: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
+                        TextField(
+                          decoration: InputDecoration(
+                            hintText: '请输入邮箱',
+                            labelText: '邮箱',
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: '请输入六位以上的密码',
-                              labelText: '密码',
-                            ),
-                            obscureText: true,
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
-                      child: Container(
-                        color: Colors.brown,
-                        child: const Text('登录按钮'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
-                      child: Container(
-                        color: Colors.brown,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [Text('没有账号? '), Text('立即注册')],
                         ),
-                      ),
+                        TextField(
+                          decoration: InputDecoration(
+                            hintText: '请输入六位以上的密码',
+                            labelText: '密码',
+                          ),
+                          obscureText: true,
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(69, 202, 181, 11)),
+                      ),
+                      child: const Text(
+                        '登录按钮',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('没有账号? '),
+                        InkWell(
+                          child: const Text('立即注册'),
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
