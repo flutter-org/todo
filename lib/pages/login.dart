@@ -25,8 +25,31 @@ class _LoginPageState extends State<LoginPage> {
             Expanded(
               child: Container(
                 color: Colors.red,
-                child: const Center(
-                  child: Text('bottom'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                          color: Colors.brown,
+                          child: const Text('邮箱'),
+                        ),
+                        Container(
+                          color: Colors.brown,
+                          child: const Text('密码'),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      color: Colors.brown,
+                      child: const Text('登录按钮'),
+                    ),
+                    Container(
+                      color: Colors.brown,
+                      child: const Text('注册提示'),
+                    ),
+                  ],
                 ),
               ),
             ),
