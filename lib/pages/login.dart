@@ -10,9 +10,28 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('登录页面'),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                color: Colors.blue,
+                child: const Center(
+                  child: Text('top'),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                color: Colors.red,
+                child: const Center(
+                  child: Text('bottom'),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
