@@ -13,7 +13,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Column(
-          children: <Widget>[
+          children: [
             Expanded(
               child: Container(
                 color: Colors.white,
@@ -31,20 +31,25 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.red,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
+                  children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 24, right: 24, bottom: 12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                            color: Colors.brown,
-                            child: const Text('邮箱'),
+                        children: const [
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: '请输入邮箱',
+                              labelText: '邮箱',
+                            ),
                           ),
-                          Container(
-                            color: Colors.brown,
-                            child: const Text('密码'),
-                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: '请输入六位以上的密码',
+                              labelText: '密码',
+                            ),
+                            obscureText: true,
+                          )
                         ],
                       ),
                     ),
