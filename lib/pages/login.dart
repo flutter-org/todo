@@ -16,9 +16,13 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Expanded(
               child: Container(
-                color: Colors.blue,
-                child: const Center(
-                  child: Text('top'),
+                color: Colors.white,
+                child: Center(
+                  child: FractionallySizedBox(
+                    widthFactor: 0.4,
+                    heightFactor: 0.4,
+                    child: Image.asset('assets/images/mark.png'),
+                  ),
                 ),
               ),
             ),
@@ -57,10 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.brown,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text('没有账号? '),
-                            Text('立即注册')
-                          ],
+                          children: const [Text('没有账号? '), Text('立即注册')],
                         ),
                       ),
                     ),
