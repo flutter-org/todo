@@ -7,6 +7,11 @@ void main() {
   runApp(const MyApp());
 }
 
+final Map<String, WidgetBuilder> routes = {
+  LOGIN_PAGE_URL: (context) => const LoginPage(),
+  REGISTER_PAGE_URL: (context) => const RegisterPage(),
+};
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -17,10 +22,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: LOGIN_PAGE_URL,
-      routes: {
-        LOGIN_PAGE_URL: (context) => const LoginPage(),
-        REGISTER_PAGE_URL: (context) => const RegisterPage(),
+      home: routes[LOGIN_PAGE_URL]!(context),
+      onGenerateRoute: (RouteSettings settings) {
+        if ([REGISTER_PAGE_URL].contains(settings.name)) {
+          return PageRouteBuilder(
+            pageBuilder: (context, _, __) => routes[settings.name]!(context),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            settings: settings,
+          );
+        }
+        return MaterialPageRoute(
+          builder: routes[settings.name]!,
+          settings: settings,
+        );
       },
     );
   }
