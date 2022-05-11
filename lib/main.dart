@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
           return PageRouteBuilder(
             pageBuilder: (context, _, __) => routes[settings.name]!(context),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              debugPrint('animation is $animation');
               return FadeTransition(
                 opacity: animation,
                 child: child,
