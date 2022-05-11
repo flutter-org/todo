@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/pages/login.dart';
+import 'package:todo/pages/register.dart';
+import 'package:todo/pages/route_url.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +17,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      initialRoute: LOGIN_PAGE_URL,
+      routes: {
+        LOGIN_PAGE_URL: (context) => const LoginPage(),
+        REGISTER_PAGE_URL: (context) => const RegisterPage(),
+      },
     );
   }
 }

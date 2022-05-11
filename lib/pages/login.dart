@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/pages/register.dart';
+import 'package:todo/pages/route_url.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -111,11 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                               InkWell(
                                 child: const Text('立即注册'),
                                 onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => const RegisterPage(),
-                                    ),
-                                  );
+                                  Navigator.of(context).pushNamed(REGISTER_PAGE_URL);
                                 },
                               ),
                             ],
