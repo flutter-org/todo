@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       home: routes[LOGIN_PAGE_URL]!(context),
       onGenerateRoute: (RouteSettings settings) {
-        if ([REGISTER_PAGE_URL].contains(settings.name)) {
+        if ([REGISTER_PAGE_URL, LOGIN_PAGE_URL].contains(settings.name)) {
           return PageRouteBuilder(
             pageBuilder: (context, _, __) => routes[settings.name]!(context),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
