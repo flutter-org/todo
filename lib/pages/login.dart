@@ -112,7 +112,13 @@ class _LoginPageState extends State<LoginPage> {
                               InkWell(
                                 child: const Text('立即注册'),
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(REGISTER_PAGE_URL);
+                                  Navigator.of(context).pushNamed(
+                                    REGISTER_PAGE_URL,
+                                    arguments: RegisterPageArgument(
+                                      'LoginPage',
+                                      LOGIN_PAGE_URL,
+                                    ),
+                                  );
                                 },
                               ),
                             ],
