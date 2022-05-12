@@ -86,7 +86,10 @@ class _TodoEntryPageState extends State<TodoEntryPage> {
           _buildBottomNavigationBarItem('assets/images/about.png'),
         ],
       ),
-      body: pages[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: pages,
+      ),
     );
   }
 }

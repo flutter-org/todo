@@ -12,12 +12,10 @@ class _TodoListPageState extends State<TodoListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('待办列表'),
+        title: const Text('清单'),
       ),
-      body: Center(
-        child: Text(
-          runtimeType.toString(),
-        ),
+      body: const Center(
+        child: TextField(),
       ),
     );
   }
