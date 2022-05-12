@@ -59,6 +59,14 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  void _register() async {
+    if (!canRegister) {
+      return;
+    }
+    String email = _emailController.text;
+    String password = _passwordController.text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -174,9 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             bottom: 12,
                           ),
                           child: TextButton(
-                            onPressed: () {
-                              if (!canRegister) return;
-                            },
+                            onPressed: _register,
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.resolveWith((states) {
                                 if (states.contains(MaterialState.disabled)) {
