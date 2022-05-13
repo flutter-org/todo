@@ -24,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    canRegister = false;
+    canRegister = true;
   }
 
   void _checkInputValid(String _) {
@@ -58,6 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     String email = _emailController.text;
     String password = _passwordController.text;
+    Navigator.of(context).pushReplacementNamed(TODO_ENTRY_PAGE_URL);
   }
 
   @override
@@ -175,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             bottom: 12,
                           ),
                           child: TextButton(
-                            onPressed: _register,
+                            onPressed: canRegister ? _register : null,
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.resolveWith((states) {
                                 if (states.contains(MaterialState.disabled)) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/component/fractionally_sized_transition.dart';
+import 'package:todo/component/image_hero.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 
@@ -12,6 +13,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
   late bool canLogin;
+  late bool useHero;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -20,7 +22,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    canLogin = false;
+    canLogin = true;
+    useHero = true;
 
     _animationController = AnimationController(
       vsync: this,
@@ -49,8 +52,19 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     });
   }
 
+  void _login() {
+    if (!canLogin) {
+      return;
+    }
+    setState(() {
+      useHero = false;
+    });
+    Navigator.of(context).pushReplacementNamed(TODO_ENTRY_PAGE_URL);
+  }
+
   @override
   Widget build(BuildContext context) {
+    String markAssetName = 'assets/images/mark.png';
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -71,7 +85,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         controller: _animationController,
                         beginFactor: 0.4,
                         endFactor: 0.5,
-                        child: Image.asset('assets/images/mark.png'),
+                        child: useHero ? ImageHero.asset(markAssetName) : Image.asset(markAssetName),
                       ),
                     ),
                   ),
@@ -111,13 +125,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(69, 202, 181, 11)),
                             ),
+                            onPressed: canLogin ? _login : null,
                             child: const Text(
                               '登录',
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () {
-                              if (!canLogin) return;
-                            },
                           ),
                         ),
                         Padding(
