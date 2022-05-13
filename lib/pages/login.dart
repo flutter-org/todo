@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/component/fractionally_sized_transition.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 
@@ -14,7 +15,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  late Animation<double> _animation;
   late AnimationController _animationController;
 
   @override
@@ -26,15 +26,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       vsync: this,
       duration: const Duration(microseconds: 1000),
     );
-    Animation<double> parentAnimation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.bounceIn,
-    );
-    Tween<double> tween = Tween<double>(begin: 0.4, end: 0.5);
-    _animation = tween.animate(parentAnimation);
-    _animation.addListener(() {
-      setState(() {});
-    });
     _animationController.forward().then((value) => _animationController.reverse());
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -76,9 +67,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 children: [
                   Expanded(
                     child: Center(
-                      child: FractionallySizedBox(
-                        widthFactor: _animation.value,
-                        heightFactor: _animation.value,
+                      child: FractionallySizedTransition(
+                        controller: _animationController,
+                        beginFactor: 0.4,
+                        endFactor: 0.5,
                         child: Image.asset('assets/images/mark.png'),
                       ),
                     ),
