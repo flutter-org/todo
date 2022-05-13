@@ -16,15 +16,40 @@ class TodoListPage extends StatefulWidget {
 
 class TodoListPageState extends State<TodoListPage> {
   late TodoList todoList;
+  GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
 
   @override
   void initState() {
     super.initState();
-    todoList = TodoList(generateTodos(100));
+    todoList = TodoList(generateTodos(3));
   }
 
   void addTodo(Todo todo) {
     todoList.add(todo);
+    int index = todoList.list.indexOf(todo);
+    animatedListKey.currentState?.insertItem(index);
+  }
+
+  void removeTodo(Todo todo) async {
+    bool result = await showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return DeleteTodoDialog(
+            todo: todo,
+          );
+        });
+    if (result) {
+      int index = todoList.list.indexOf(todo);
+      todoList.remove(todo.id!);
+      animatedListKey.currentState?.removeItem(index, (context, animation) {
+        return SizeTransition(
+          sizeFactor: animation,
+          child: TodoItem(
+            todo: todo,
+          ),
+        );
+      });
+    }
   }
 
   @override
@@ -33,48 +58,42 @@ class TodoListPageState extends State<TodoListPage> {
       appBar: AppBar(
         title: const Text('清单'),
       ),
-      body: ListView.builder(
-          itemCount: todoList.length,
-          itemBuilder: (context, index) {
-            return TodoItem(
-              todo: todoList.list[index],
-              onFinished: (Todo todo) {
-                setState(() {
-                  todo.isFinished = !todo.isFinished!;
-                  todoList.update(todo);
-                });
-              },
-              onStar: (Todo todo) {
-                setState(() {
-                  todo.isStar = !todo.isStar!;
-                });
-              },
-              onTap: (Todo todo) async {
-                await Navigator.of(context).pushNamed(
-                  EDIT_TODO_PAGE_URL,
-                  arguments: EditTodoPageArgument(
-                    openType: OpenType.Preview,
-                    todo: todo,
-                  ),
-                );
-                setState(() {
-                  todoList.update(todo);
-                });
-              },
-              onLongPress: (Todo todo) async {
-                bool result = await showCupertinoDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DeleteTodoDialog(
-                        todo: todo,
-                      );
-                    });
-                if (result) {
+      body: AnimatedList(
+          key: animatedListKey,
+          initialItemCount: todoList.length,
+          itemBuilder: (BuildContext context, int index, Animation<double> animation) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: TodoItem(
+                todo: todoList.list[index],
+                onFinished: (Todo todo) {
                   setState(() {
-                    todoList.remove(todo.id!);
+                    todo.isFinished = !todo.isFinished!;
+                    todoList.update(todo);
                   });
-                }
-              },
+                },
+                onStar: (Todo todo) {
+                  setState(() {
+                    todo.isStar = !todo.isStar!;
+                  });
+                },
+                onTap: (Todo todo) async {
+                  await Navigator.of(context).pushNamed(
+                    EDIT_TODO_PAGE_URL,
+                    arguments: EditTodoPageArgument(
+                      openType: OpenType.Preview,
+                      todo: todo,
+                    ),
+                  );
+                  setState(() {
+                    todoList.update(todo);
+                  });
+                },
+                onLongPress: removeTodo,
+              ),
             );
           }),
     );

@@ -120,7 +120,7 @@ class DeleteTodoDialog extends Dialog {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              _dismissDialog(context, false);
+              _dismissDialog(context, true);
             },
             child: Container(
               alignment: Alignment.center,
