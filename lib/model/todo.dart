@@ -57,13 +57,13 @@ class Todo {
   String? id;
 
   /// 标题
-  String? title;
+  String title;
 
   /// 详细内容
   String? description;
 
   /// 日期
-  DateTime? date;
+  DateTime date;
 
   /// 开始时间
   TimeOfDay? startTime;
@@ -75,21 +75,29 @@ class Todo {
   Priority priority;
 
   /// 是否完成
-  bool? isFinished;
+  bool isFinished;
 
   /// 是否为标星待办事项
-  bool? isStar;
+  bool isStar;
+
+  String get timeString {
+    String dateString = date.compareTo(DateTime.now()) == 0 ? 'today' : '${date.year}/${date.month}/${date.day}';
+    if (startTime == null || endTime == null) {
+      return dateString;
+    }
+    return '$dateString ${startTime!.hour}:${startTime!.minute} - ${endTime!.hour}:${endTime!.minute}';
+  }
 
   Todo({
     String? id,
-    this.title,
+    required this.title,
     this.description,
-    this.date,
+    required this.date,
     this.startTime,
     this.endTime,
     this.priority = Priority.Unspecific, // 该项值越小代表优先级越高
-    this.isFinished,
-    this.isStar,
+    required this.isFinished,
+    required this.isStar,
   }) : id = id ?? generateNewId() {
     // 如果开始时间为空,则设置其值为当前时间
     date ??= DateTime.now().dayTime;
