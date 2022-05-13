@@ -30,3 +30,10 @@ class LocationDetailArgument {
 
   LocationDetailArgument(this.location);
 }
+
+class WebViewArgument {
+  final String url;
+  final String title;
+
+  WebViewArgument(this.url, this.title);
+}

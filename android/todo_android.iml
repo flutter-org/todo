@@ -130,5 +130,12 @@
     <orderEntry type="library" name="Gradle: io.flutter:arm64_v8a_debug:1.0.0-845a259a18de59583b17b8200923ff6770ce0f71" level="project" />
     <orderEntry type="library" name="Gradle: io.flutter:x86_64_debug:1.0.0-845a259a18de59583b17b8200923ff6770ce0f71" level="project" />
     <orderEntry type="library" name="Gradle: io.flutter:x86_debug:1.0.0-845a259a18de59583b17b8200923ff6770ce0f71" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.webkit:webkit:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: org.mockito:mockito-inline:3.11.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.mockito:mockito-core:3.11.1" level="project" />
+    <orderEntry type="library" name="Gradle: net.bytebuddy:byte-buddy:1.11.2" level="project" />
+    <orderEntry type="library" name="Gradle: net.bytebuddy:byte-buddy-agent:1.11.2" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.test:core:1.3.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.test:monitor:1.3.0@aar" level="project" />
   </component>
 </module>

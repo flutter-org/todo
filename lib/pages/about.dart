@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/component/image_hero.dart';
+import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 
 class AboutPage extends StatefulWidget {
@@ -47,6 +48,25 @@ class _AboutPageState extends State<AboutPage> {
                           child: Text('版本 1.0.0'),
                         ),
                       ],
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        WEB_VIEW_PAGE_URL,
+                        arguments: WebViewArgument(
+                          'https://flutter.cn/',
+                          '隐私政策',
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      '隐私政策',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        decoration: TextDecoration.underline,
+                        decorationStyle: TextDecorationStyle.dotted,
+                      ),
                     ),
                   ),
                   Padding(
