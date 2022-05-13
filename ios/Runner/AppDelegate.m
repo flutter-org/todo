@@ -18,6 +18,9 @@
             result(FlutterMethodNotImplemented);
         }
     }];
+    
+    PlatformTextViewFactory *factory = [[PlatformTextViewFactory alloc] init];
+    [[self registrarForPlugin:@"com.Story5.todo.view"] registerViewFactory:factory withId:@"platform_text_view"];
 	[GeneratedPluginRegistrant registerWithRegistry:self];
 	// 可以在这里添加更多代码,定制应用启动后的行为
 	// Override point for customization after application launch.
