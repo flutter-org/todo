@@ -21,7 +21,10 @@ class LabelGroup extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(labelText, style: labelStyle ?? Theme.of(context).inputDecorationTheme?.labelStyle),
+          Text(
+            labelText,
+            style: labelStyle ?? Theme.of(context).inputDecorationTheme?.labelStyle,
+          ),
           child,
         ],
       ),

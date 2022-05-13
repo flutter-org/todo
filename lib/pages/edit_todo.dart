@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:todo/component/label_group.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/model/todo.dart';
+
+const TextStyle _labelTextStyle = TextStyle(
+  color: Color(0xFF1D1D26),
+  fontFamily: 'Avenir',
+  fontSize: 14.0,
+);
+const EdgeInsets _labelPadding = EdgeInsets.fromLTRB(20, 10, 20, 20);
+const InputBorder _textFormBorder = UnderlineInputBorder(
+  borderSide: BorderSide(
+    color: Colors.black26,
+    width: 0.5,
+  ),
+);
 
 class EditTodoPage extends StatefulWidget {
   const EditTodoPage({Key? key}) : super(key: key);
@@ -12,6 +26,7 @@ class EditTodoPage extends StatefulWidget {
 class _EditTodoPageState extends State<EditTodoPage> {
   late OpenType _openType;
   late Todo _todo;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Map<OpenType, _OpenTypeConfig> _openTypeConfigMap;
 
   @override
@@ -39,11 +54,12 @@ class _EditTodoPageState extends State<EditTodoPage> {
   }
 
   void _submit() {
-    Navigator.of(context).pop();
-  }
-
-  Widget _buildForm() {
-    return Center(child: Text(_openType.toString()));
+    // validate 方法会触发 Form 组件中所有 TextFormField 的 validator 方法
+    if (_formKey.currentState!.validate()) {
+      // 同样, save 方法会触发 Form 组件中所有 TextFormField 的 onSave 方法
+      _formKey.currentState!.save();
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -66,6 +82,59 @@ class _EditTodoPageState extends State<EditTodoPage> {
         ],
       ),
       body: _buildForm(),
+    );
+  }
+
+  Widget _buildForm() {
+    return SingleChildScrollView(
+      child: Form(
+        child: Column(
+          children: [
+            _buildTextFormField(
+              '名称',
+              '任务名称',
+              maxLines: 1,
+              initialValue: _todo.title,
+              onSaved: (value) => _todo.title = value,
+            ),
+            _buildTextFormField(
+              '描述',
+              '任务描述',
+              initialValue: _todo.description,
+              onSaved: (value) => _todo.description = value,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextFormField(
+    String title,
+    String hintText, {
+    int? maxLines,
+    String? initialValue,
+    FormFieldSetter<String>? onSaved,
+  }) {
+    TextInputType inputType = maxLines == null ? TextInputType.multiline : TextInputType.text;
+    return LabelGroup(
+      labelText: title,
+      labelStyle: _labelTextStyle,
+      padding: _labelPadding,
+      child: TextFormField(
+        keyboardType: inputType,
+        validator: (String? value) {
+          return (value != null && value!.isNotEmpty) ? null : '$title 不能为空';
+        },
+        onSaved: onSaved,
+        textInputAction: TextInputAction.done,
+        maxLines: maxLines,
+        initialValue: initialValue,
+        decoration: InputDecoration(
+          hintText: hintText,
+          enabledBorder: _textFormBorder,
+        ),
+      ),
     );
   }
 }
