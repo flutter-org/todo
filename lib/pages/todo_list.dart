@@ -36,13 +36,13 @@ class _TodoListPageState extends State<TodoListPage> {
               todo: todoList.list[index],
               onFinished: (Todo todo) {
                 setState(() {
-                  todo.isFinished = !todo.isFinished;
+                  todo.isFinished = !todo.isFinished!;
                   todoList.update(todo);
                 });
               },
               onStar: (Todo todo) {
                 setState(() {
-                  todo.isStar = !todo.isStar;
+                  todo.isStar = !todo.isStar!;
                 });
               },
               onTap: (Todo todo) {
@@ -95,7 +95,7 @@ class TodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: todo.isFinished ? 0.3 : 1.0,
+      opacity: todo.isFinished! ? 0.3 : 1.0,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -129,14 +129,14 @@ class TodoItem extends StatelessWidget {
                           if (onFinished != null) onFinished!(todo);
                         },
                         child: Image.asset(
-                          todo.isFinished ? 'assets/images/rect_selected.png' : 'assets/images/rect.png',
+                          todo.isFinished! ? 'assets/images/rect_selected.png' : 'assets/images/rect.png',
                           width: 25,
                           height: 25,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: Text(todo.title),
+                        child: Text(todo?.title ?? ''),
                       ),
                     ],
                   ),
@@ -145,7 +145,7 @@ class TodoItem extends StatelessWidget {
                       if (onStar != null) onStar!(todo);
                     },
                     child: Image.asset(
-                      todo.isStar ? 'assets/images/star.png' : 'assets/images/star_normal.png',
+                      todo.isStar! ? 'assets/images/star.png' : 'assets/images/star_normal.png',
                       width: 25,
                       height: 25,
                     ),

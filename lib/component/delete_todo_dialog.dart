@@ -34,8 +34,8 @@ class DeleteTodoDialog extends Dialog {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
-                          _createTitleWidget(context, todo.title),
-                          _createDescWidget(todo.description),
+                          _createTitleWidget(context, todo.title!),
+                          _createDescWidget(todo.description!),
                         ],
                       ),
                     ),

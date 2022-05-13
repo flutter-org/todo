@@ -44,16 +44,16 @@ class TodoList {
   /// 5.结束日期较早的Todo排在结束日期较晚的Todo之前
   _sort() {
     _todoList.sort((Todo a, Todo b) {
-      if (!a.isFinished && b.isFinished) {
+      if (!a.isFinished! && b.isFinished!) {
         return -1;
       }
-      if (a.isFinished && !b.isFinished) {
+      if (a.isFinished! && !b.isFinished!) {
         return 1;
       }
-      if (a.isStar && !b.isStar) {
+      if (a.isStar! && !b.isStar!) {
         return -1;
       }
-      if (!a.isStar && b.isStar) {
+      if (!a.isStar! && b.isStar!) {
         return 1;
       }
       if (a.priority.isHigher(b.priority)) {
