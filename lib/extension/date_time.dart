@@ -4,4 +4,6 @@ extension DateTimeUtils on DateTime {
   bool isSameDay(DateTime other) => year == other.year && month == other.month && day == other.day;
 
   bool isSameYear(DateTime other) => year == other.year;
+
+  String get dateString => '$year/$month/$day';
 }

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo/component/date_field_group.dart';
 import 'package:todo/component/label_group.dart';
+import 'package:todo/component/time_field_group.dart';
 import 'package:todo/const/route_argument.dart';
+import 'package:todo/extension/date_time.dart';
+import 'package:todo/extension/time_of_day.dart';
 import 'package:todo/model/todo.dart';
 
 const TextStyle _labelTextStyle = TextStyle(
@@ -29,6 +33,10 @@ class _EditTodoPageState extends State<EditTodoPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Map<OpenType, _OpenTypeConfig> _openTypeConfigMap;
 
+  final TextEditingController _dateTextEditingController = TextEditingController();
+  final TextEditingController _startTimeEditingController = TextEditingController();
+  final TextEditingController _endTimeEditingController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +53,17 @@ class _EditTodoPageState extends State<EditTodoPage> {
     EditTodoPageArgument? arguments = ModalRoute.of(context)?.settings.arguments as EditTodoPageArgument;
     _openType = arguments.openType;
     _todo = arguments?.todo ?? Todo();
+    _dateTextEditingController.text = _todo.date!.dateString;
+    _startTimeEditingController.text = _todo.startTime!.timeString;
+    _endTimeEditingController.text = _todo.endTime!.timeString;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dateTextEditingController.dispose();
+    _startTimeEditingController.dispose();
+    _endTimeEditingController.dispose();
   }
 
   void _edit() {
@@ -103,6 +122,38 @@ class _EditTodoPageState extends State<EditTodoPage> {
               initialValue: _todo.description,
               onSaved: (value) => _todo.description = value,
             ),
+            _buildDateFormField(
+              '日期',
+              '请选择日期',
+              initialValue: _todo.date!,
+              controller: _dateTextEditingController,
+              onSelect: (value) {
+                _todo.date == value.dayTime;
+                _dateTextEditingController.text = _todo.date!.dateString;
+              },
+            ),
+            _buildTimeFormField(
+              '开始时间',
+              '请选择开始时间',
+              initialValue: _todo.startTime!,
+              controller: _startTimeEditingController,
+              onSelect: (value) {
+                _todo.startTime = value;
+                _startTimeEditingController.text = _todo.startTime!.timeString;
+              },
+            ),
+            Expanded(
+              child: _buildTimeFormField(
+                '终止时间',
+                '请选择终止时间',
+                initialValue: _todo.endTime!,
+                controller: _endTimeEditingController,
+                onSelect: (value) {
+                  _todo.endTime = value;
+                  _endTimeEditingController.text = _todo.endTime!.timeString;
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -133,6 +184,57 @@ class _EditTodoPageState extends State<EditTodoPage> {
         decoration: InputDecoration(
           hintText: hintText,
           enabledBorder: _textFormBorder,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateFormField(
+    String title,
+    String hintText, {
+    required DateTime initialValue,
+    TextEditingController? controller,
+    Function(DateTime)? onSelect,
+  }) {
+    DateTime now = DateTime.now();
+    return LabelGroup(
+      labelText: title,
+      child: DateFieldGroup(
+        onSelect: onSelect,
+        initialDate: initialValue,
+        startDate: initialValue ?? DateTime(now.year, now.month, now.day - 1),
+        endDate: DateTime(2025),
+        child: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(hintText: hintText, disabledBorder: _textFormBorder),
+          validator: (String? value) {
+            return value == null ? '$title 不能为空' : null;
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimeFormField(
+    String title,
+    String hintText, {
+    TextEditingController? controller,
+    required TimeOfDay initialValue,
+    Function(TimeOfDay)? onSelect,
+  }) {
+    return LabelGroup(
+      labelText: title,
+      labelStyle: _labelTextStyle,
+      padding: _labelPadding,
+      child: TimeFieldGroup(
+        onSelect: onSelect,
+        initialTime: initialValue,
+        child: TextFormField(
+          validator: (String? value) {
+            return (value != null && value.isNotEmpty) ? null : '$title 不能为空';
+          },
+          controller: controller,
+          decoration: InputDecoration(hintText: hintText, disabledBorder: _textFormBorder),
         ),
       ),
     );
