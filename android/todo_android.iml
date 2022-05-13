@@ -125,5 +125,10 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-845a259a18de59583b17b8200923ff6770ce0f71" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:armeabi_v7a_debug:1.0.0-845a259a18de59583b17b8200923ff6770ce0f71" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:arm64_v8a_debug:1.0.0-845a259a18de59583b17b8200923ff6770ce0f71" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:x86_64_debug:1.0.0-845a259a18de59583b17b8200923ff6770ce0f71" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:x86_debug:1.0.0-845a259a18de59583b17b8200923ff6770ce0f71" level="project" />
   </component>
 </module>
