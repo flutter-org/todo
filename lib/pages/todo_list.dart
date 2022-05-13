@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/component/delete_todo_dialog.dart';
+import 'package:todo/const/route_argument.dart';
+import 'package:todo/const/route_url.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/utils/generate_todo.dart';
 
@@ -27,7 +31,42 @@ class _TodoListPageState extends State<TodoListPage> {
       body: ListView.builder(
           itemCount: todoList.length,
           itemBuilder: (context, index) {
-            return TodoItem(todo: todoList[index]);
+            return TodoItem(
+              todo: todoList[index],
+              onFinished: (Todo todo) {
+                setState(() {
+                  todo.isFinished = !todo.isFinished;
+                });
+              },
+              onStar: (Todo todo) {
+                setState(() {
+                  todo.isStar = !todo.isStar;
+                });
+              },
+              onTap: (Todo todo) {
+                Navigator.of(context).pushNamed(
+                  EDIT_TODO_PAGE_URL,
+                  arguments: EditTodoPageArgument(
+                    OpenType.Preview,
+                    todo,
+                  ),
+                );
+              },
+              onLongPress: (Todo todo) async {
+                bool result = await showCupertinoDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DeleteTodoDialog(
+                        todo: todo,
+                      );
+                    });
+                if (result) {
+                  setState(() {
+                    todoList.remove(todo);
+                  });
+                }
+              },
+            );
           }),
     );
   }

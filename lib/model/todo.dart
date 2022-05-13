@@ -60,7 +60,7 @@ class Todo {
   String title;
 
   /// 详细内容
-  String? description;
+  String description;
 
   /// 日期
   DateTime? date;
@@ -91,7 +91,7 @@ class Todo {
   Todo({
     String? id,
     required this.title,
-    this.description,
+    required this.description,
     this.date,
     this.startTime,
     this.endTime,

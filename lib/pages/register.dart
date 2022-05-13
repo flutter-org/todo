@@ -2,14 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:todo/pages/route_url.dart';
-
-class RegisterPageArgument {
-  final String className;
-  final String url;
-
-  RegisterPageArgument(this.className, this.url);
-}
+import 'package:todo/const/route_url.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);

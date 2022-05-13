@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/pages/register.dart';
-import 'package:todo/pages/route_url.dart';
+import 'package:todo/const/route_argument.dart';
+import 'package:todo/const/route_url.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
