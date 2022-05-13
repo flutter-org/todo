@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/model/todo.dart';
 import 'package:todo/pages/about.dart';
 import 'package:todo/pages/calendar.dart';
 import 'package:todo/pages/edit_todo.dart';
@@ -47,6 +49,12 @@ class MyApp extends StatelessWidget {
               );
             },
             settings: settings,
+          );
+        } else if ([EDIT_TODO_PAGE_URL].contains(settings.name)) {
+          return CupertinoPageRoute<Todo>(
+            builder: routes[settings.name]!,
+            settings: settings,
+            fullscreenDialog: true,
           );
         }
         return MaterialPageRoute(

@@ -11,16 +11,20 @@ class TodoListPage extends StatefulWidget {
   const TodoListPage({Key? key}) : super(key: key);
 
   @override
-  State<TodoListPage> createState() => _TodoListPageState();
+  TodoListPageState createState() => TodoListPageState();
 }
 
-class _TodoListPageState extends State<TodoListPage> {
+class TodoListPageState extends State<TodoListPage> {
   late TodoList todoList;
 
   @override
   void initState() {
     super.initState();
     todoList = TodoList(generateTodos(100));
+  }
+
+  void addTodo(Todo todo) {
+    todoList.add(todo);
   }
 
   @override
@@ -45,14 +49,17 @@ class _TodoListPageState extends State<TodoListPage> {
                   todo.isStar = !todo.isStar!;
                 });
               },
-              onTap: (Todo todo) {
-                Navigator.of(context).pushNamed(
+              onTap: (Todo todo) async {
+                await Navigator.of(context).pushNamed(
                   EDIT_TODO_PAGE_URL,
                   arguments: EditTodoPageArgument(
-                    OpenType.Preview,
-                    todo,
+                    openType: OpenType.Preview,
+                    todo: todo,
                   ),
                 );
+                setState(() {
+                  todoList.update(todo);
+                });
               },
               onLongPress: (Todo todo) async {
                 bool result = await showCupertinoDialog(

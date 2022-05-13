@@ -17,7 +17,10 @@ class RegisterPageArgument {
 
 class EditTodoPageArgument {
   final OpenType openType;
-  final Todo todo;
+  final Todo? todo;
 
-  EditTodoPageArgument(this.openType, this.todo);
+  EditTodoPageArgument({
+    required this.openType,
+    this.todo,
+  });
 }
