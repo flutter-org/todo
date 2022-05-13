@@ -4,6 +4,7 @@ import 'package:todo/component/delete_todo_dialog.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/todo.dart';
+import 'package:todo/model/todo_list.dart';
 import 'package:todo/utils/generate_todo.dart';
 
 class TodoListPage extends StatefulWidget {
@@ -14,12 +15,12 @@ class TodoListPage extends StatefulWidget {
 }
 
 class _TodoListPageState extends State<TodoListPage> {
-  late List<Todo> todoList;
+  late TodoList todoList;
 
   @override
   void initState() {
     super.initState();
-    todoList = generateTodos(100);
+    todoList = TodoList(generateTodos(100));
   }
 
   @override
@@ -32,10 +33,11 @@ class _TodoListPageState extends State<TodoListPage> {
           itemCount: todoList.length,
           itemBuilder: (context, index) {
             return TodoItem(
-              todo: todoList[index],
+              todo: todoList.list[index],
               onFinished: (Todo todo) {
                 setState(() {
                   todo.isFinished = !todo.isFinished;
+                  todoList.update(todo);
                 });
               },
               onStar: (Todo todo) {
@@ -62,7 +64,7 @@ class _TodoListPageState extends State<TodoListPage> {
                     });
                 if (result) {
                   setState(() {
-                    todoList.remove(todo);
+                    todoList.remove(todo.id!);
                   });
                 }
               },
