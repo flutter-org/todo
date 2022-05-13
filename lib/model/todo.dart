@@ -52,6 +52,29 @@ class Priority {
   ];
 }
 
+class Location {
+  /// 纬度
+  final double latitude;
+
+  /// 经度
+  final double longitude;
+
+  /// 地点描述
+  final String description;
+
+  /// 默认的构造器
+  const Location({
+    this.latitude = 0,
+    this.longitude = 0,
+    this.description = '',
+  });
+
+  /// 命名构造器,用于构造只有描述信息的 Location 对象
+  Location.fromDescription(this.description)
+      : latitude = 0,
+        longitude = 0;
+}
+
 class Todo {
   /// id
   String? id;
@@ -80,6 +103,9 @@ class Todo {
   /// 是否为标星待办事项
   bool? isStar;
 
+  /// 待办事项所关联的位置
+  Location location;
+
   String get timeString {
     String dateString = date!.compareTo(DateTime.now()) == 0 ? 'today' : '${date!.year}/${date!.month}/${date!.day}';
     if (startTime == null || endTime == null) {
@@ -98,6 +124,7 @@ class Todo {
     this.priority = Priority.Unspecific, // 该项值越小代表优先级越高
     this.isFinished,
     this.isStar,
+    this.location = const Location(),
   }) : id = id ?? generateNewId() {
     // 如果开始时间为空,则设置其值为当前时间
     date ??= DateTime.now().dayTime;
