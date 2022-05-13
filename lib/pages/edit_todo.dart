@@ -5,6 +5,7 @@ import 'package:todo/component/location_field_group.dart';
 import 'package:todo/component/priority_field_group.dart';
 import 'package:todo/component/time_field_group.dart';
 import 'package:todo/const/route_argument.dart';
+import 'package:todo/const/route_url.dart';
 import 'package:todo/extension/date_time.dart';
 import 'package:todo/extension/time_of_day.dart';
 import 'package:todo/model/todo.dart';
@@ -45,8 +46,8 @@ class _EditTodoPageState extends State<EditTodoPage> {
     super.initState();
     _openTypeConfigMap = {
       OpenType.Preview: _OpenTypeConfig('查看 TODO', Icons.edit, _edit),
-      OpenType.Edit: _OpenTypeConfig('编辑 TODO', Icons.edit, _submit),
-      OpenType.Add: _OpenTypeConfig('添加 TODO', Icons.edit, _submit),
+      OpenType.Edit: _OpenTypeConfig('编辑 TODO', Icons.check, _submit),
+      OpenType.Add: _OpenTypeConfig('添加 TODO', Icons.check, _submit),
     };
   }
 
@@ -69,21 +70,6 @@ class _EditTodoPageState extends State<EditTodoPage> {
     _startTimeEditingController.dispose();
     _endTimeEditingController.dispose();
     _locationEditingController.dispose();
-  }
-
-  void _edit() {
-    setState(() {
-      _openType = OpenType.Edit;
-    });
-  }
-
-  void _submit() {
-    // validate 方法会触发 Form 组件中所有 TextFormField 的 validator 方法
-    if (_formKey.currentState!.validate()) {
-      // 同样, save 方法会触发 Form 组件中所有 TextFormField 的 onSave 方法
-      _formKey.currentState!.save();
-      Navigator.of(context).pop();
-    }
   }
 
   @override
@@ -115,9 +101,9 @@ class _EditTodoPageState extends State<EditTodoPage> {
       child: IgnorePointer(
         ignoring: !canEdit,
         child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
+          behavior: HitTestBehavior.translucent,
           onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
+            FocusScope.of(context).unfocus();
           },
           child: Form(
             key: _formKey,
@@ -149,15 +135,17 @@ class _EditTodoPageState extends State<EditTodoPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildTimeFormField(
-                      '开始时间',
-                      '请选择开始时间',
-                      initialValue: _todo.startTime!,
-                      controller: _startTimeEditingController,
-                      onSelect: (value) {
-                        _todo.startTime = value;
-                        _startTimeEditingController.text = _todo.startTime!.timeString;
-                      },
+                    Expanded(
+                      child: _buildTimeFormField(
+                        '开始时间',
+                        '请选择开始时间',
+                        initialValue: _todo.startTime!,
+                        controller: _startTimeEditingController,
+                        onSelect: (value) {
+                          _todo.startTime = value;
+                          _startTimeEditingController.text = _todo.startTime!.timeString;
+                        },
+                      ),
                     ),
                     Expanded(
                       child: _buildTimeFormField(
@@ -230,6 +218,8 @@ class _EditTodoPageState extends State<EditTodoPage> {
     DateTime now = DateTime.now();
     return LabelGroup(
       labelText: title,
+      labelStyle: _labelTextStyle,
+      padding: _labelPadding,
       child: DateFieldGroup(
         onSelect: onSelect,
         initialDate: initialValue,
@@ -265,7 +255,10 @@ class _EditTodoPageState extends State<EditTodoPage> {
             return (value != null && value.isNotEmpty) ? null : '$title 不能为空';
           },
           controller: controller,
-          decoration: InputDecoration(hintText: hintText, disabledBorder: _textFormBorder),
+          decoration: InputDecoration(
+            hintText: hintText,
+            disabledBorder: _textFormBorder,
+          ),
         ),
       ),
     );
@@ -302,7 +295,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
                     alignment: Alignment.center,
                     child: Container(
                       width: 100,
-                      height: 50,
+                      height: 5,
                       color: _todo.priority.color,
                     ),
                   ),
@@ -328,19 +321,44 @@ class _EditTodoPageState extends State<EditTodoPage> {
   }) {
     return LabelGroup(
       labelText: title,
-      child: LocationFieldGroup(
-        onChange: onSaved,
-        child: TextFormField(
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: hintText,
-            enabledBorder: _textFormBorder,
+      labelStyle: _labelTextStyle,
+      padding: _labelPadding,
+      child: GestureDetector(
+        onLongPress: () {
+          Navigator.of(context).pushNamed(
+            LOCATION_DETAIL_PAGE_URL,
+            arguments: LocationDetailArgument(_todo.location),
+          );
+        },
+        child: LocationFieldGroup(
+          onChange: onSaved,
+          child: TextFormField(
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: hintText,
+              enabledBorder: _textFormBorder,
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void _edit() {
+    setState(() {
+      _openType = OpenType.Edit;
+    });
+  }
+
+  void _submit() {
+    // validate 方法会触发 Form 组件中所有 TextFormField 的 validator 方法
+    if (_formKey.currentState!.validate()) {
+      // 同样, save 方法会触发 Form 组件中所有 TextFormField 的 onSave 方法
+      _formKey.currentState!.save();
+      Navigator.of(context).pop();
+    }
   }
 }
 

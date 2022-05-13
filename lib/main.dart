@@ -4,6 +4,7 @@ import 'package:todo/model/todo.dart';
 import 'package:todo/pages/about.dart';
 import 'package:todo/pages/calendar.dart';
 import 'package:todo/pages/edit_todo.dart';
+import 'package:todo/pages/location_detail.dart';
 import 'package:todo/pages/login.dart';
 import 'package:todo/pages/register.dart';
 import 'package:todo/pages/reporter.dart';
@@ -20,6 +21,7 @@ final Map<String, WidgetBuilder> routes = {
   REGISTER_PAGE_URL: (context) => const RegisterPage(),
   TODO_ENTRY_PAGE_URL: (context) => const TodoEntryPage(),
   EDIT_TODO_PAGE_URL: (context) => const EditTodoPage(),
+  LOCATION_DETAIL_PAGE_URL: (context) => const LocationDetailPage(),
   ABOUT_PAGE_URL: (context) => const AboutPage(),
   CALENDAR_PAGE_URL: (context) => const CalendarPage(),
   REPORTER_PAGE_URL: (context) => const ReporterPage(),

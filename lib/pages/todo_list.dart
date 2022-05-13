@@ -69,17 +69,6 @@ class TodoListPageState extends State<TodoListPage> {
               ).animate(animation),
               child: TodoItem(
                 todo: todoList.list[index],
-                onFinished: (Todo todo) {
-                  setState(() {
-                    todo.isFinished = !todo.isFinished!;
-                    todoList.update(todo);
-                  });
-                },
-                onStar: (Todo todo) {
-                  setState(() {
-                    todo.isStar = !todo.isStar!;
-                  });
-                },
                 onTap: (Todo todo) async {
                   await Navigator.of(context).pushNamed(
                     EDIT_TODO_PAGE_URL,
@@ -88,9 +77,15 @@ class TodoListPageState extends State<TodoListPage> {
                       todo: todo,
                     ),
                   );
-                  setState(() {
-                    todoList.update(todo);
-                  });
+                  todoList.update(todo);
+                },
+                onFinished: (Todo todo) {
+                  todo.isFinished = !todo.isFinished!;
+                  todoList.update(todo);
+                },
+                onStar: (Todo todo) {
+                  todo.isStar = !todo.isStar!;
+                  todoList.update(todo);
                 },
                 onLongPress: removeTodo,
               ),

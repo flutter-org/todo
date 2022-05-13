@@ -24,3 +24,9 @@ class EditTodoPageArgument {
     this.todo,
   });
 }
+
+class LocationDetailArgument {
+  final Location location;
+
+  LocationDetailArgument(this.location);
+}
