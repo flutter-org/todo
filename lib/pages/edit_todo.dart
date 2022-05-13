@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/component/date_field_group.dart';
 import 'package:todo/component/label_group.dart';
+import 'package:todo/component/priority_field_group.dart';
 import 'package:todo/component/time_field_group.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/extension/date_time.dart';
@@ -256,34 +257,42 @@ class _EditTodoPageState extends State<EditTodoPage> {
       labelText: title,
       labelStyle: _labelTextStyle,
       padding: _labelPadding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(_todo.priority.description),
-                Container(
-                  width: 100,
-                  height: 50,
-                  alignment: Alignment.center,
-                  child: Container(
+      child: PriorityFieldGroup(
+        initialValue: _todo.priority,
+        onChange: (Priority priority) {
+          setState(() {
+            _todo.priority = priority;
+          });
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_todo.priority.description),
+                  Container(
                     width: 100,
                     height: 50,
-                    color: _todo.priority.color,
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 100,
+                      height: 50,
+                      color: _todo.priority.color,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const Divider(
-            height: 1,
-            thickness: 1,
-            color: Colors.black26,
-          ),
-        ],
+            const Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.black26,
+            ),
+          ],
+        ),
       ),
     );
   }
