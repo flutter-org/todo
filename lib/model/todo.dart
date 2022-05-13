@@ -63,7 +63,7 @@ class Todo {
   String? description;
 
   /// 日期
-  DateTime date;
+  DateTime? date;
 
   /// 开始时间
   TimeOfDay? startTime;
@@ -81,7 +81,7 @@ class Todo {
   bool isStar;
 
   String get timeString {
-    String dateString = date.compareTo(DateTime.now()) == 0 ? 'today' : '${date.year}/${date.month}/${date.day}';
+    String dateString = date!.compareTo(DateTime.now()) == 0 ? 'today' : '${date!.year}/${date!.month}/${date!.day}';
     if (startTime == null || endTime == null) {
       return dateString;
     }
@@ -92,7 +92,7 @@ class Todo {
     String? id,
     required this.title,
     this.description,
-    required this.date,
+    this.date,
     this.startTime,
     this.endTime,
     this.priority = Priority.Unspecific, // 该项值越小代表优先级越高

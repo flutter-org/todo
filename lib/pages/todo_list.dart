@@ -33,10 +33,23 @@ class _TodoListPageState extends State<TodoListPage> {
   }
 }
 
+typedef TodoEventCallback = Function(Todo todo);
+
 class TodoItem extends StatelessWidget {
   final Todo todo;
+  final TodoEventCallback? onStar;
+  final TodoEventCallback? onFinished;
+  final TodoEventCallback? onTap;
+  final TodoEventCallback? onLongPress;
 
-  const TodoItem({Key? key, required this.todo}) : super(key: key);
+  const TodoItem({
+    Key? key,
+    required this.todo,
+    this.onStar,
+    this.onFinished,
+    this.onTap,
+    this.onLongPress,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,46 +68,64 @@ class TodoItem extends StatelessWidget {
         margin: const EdgeInsets.all(10.0),
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
         height: 110,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      todo.isFinished ? 'assets/images/rect_selected.png' : 'assets/images/rect.png',
+        child: GestureDetector(
+          onTap: () {
+            if (onTap != null) onTap!(todo);
+          },
+          onLongPress: () {
+            if (onLongPress != null) onLongPress!(todo);
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          if (onFinished != null) onFinished!(todo);
+                        },
+                        child: Image.asset(
+                          todo.isFinished ? 'assets/images/rect_selected.png' : 'assets/images/rect.png',
+                          width: 25,
+                          height: 25,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Text(todo.title),
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if (onStar != null) onStar!(todo);
+                    },
+                    child: Image.asset(
+                      todo.isStar ? 'assets/images/star.png' : 'assets/images/star_normal.png',
                       width: 25,
                       height: 25,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: Text(todo.title),
-                    ),
-                  ],
-                ),
-                Image.asset(
-                  todo.isStar ? 'assets/images/star.png' : 'assets/images/star_normal.png',
-                  width: 25,
-                  height: 25,
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/group.png',
-                  width: 25,
-                  height: 25,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: Text(todo.timeString),
-                )
-              ],
-            )
-          ],
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/images/group.png',
+                    width: 25,
+                    height: 25,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Text(todo.timeString),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
