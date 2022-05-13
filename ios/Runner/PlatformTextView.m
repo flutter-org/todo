@@ -15,17 +15,17 @@
 @implementation PlatformTextView
 
 -(instancetype)initWithFrame:(CGRect)frame viewIdentifier:(int64_t)viewId arguments:(id _Nullable)args {
-    if (self = [super init]) {
-        _textView = [[UILabel alloc] initWithFrame:frame];
-        _textView.textAlignment = NSTextAlignmentCenter;
-        _textView.text = args;
-        _viewId = viewId;
-    }
-    return self;
+	if (self = [super init]) {
+		_textView = [[UILabel alloc] initWithFrame:frame];
+		_textView.textAlignment = NSTextAlignmentCenter;
+		_textView.text = args;
+		_viewId = viewId;
+	}
+	return self;
 }
 
 - (nonnull UIView *)view {
-    return self.textView;
+	return self.textView;
 }
 
 

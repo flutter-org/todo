@@ -12,12 +12,12 @@
 
 
 - (nonnull NSObject<FlutterPlatformView> *)createWithFrame:(CGRect)frame viewIdentifier:(int64_t)viewId arguments:(id _Nullable)args {
-    PlatformTextView *textView = [[PlatformTextView alloc] initWithFrame:frame viewIdentifier:viewId arguments:args];
-    return textView;
+	PlatformTextView *textView = [[PlatformTextView alloc] initWithFrame:frame viewIdentifier:viewId arguments:args];
+	return textView;
 }
 
 - (NSObject<FlutterMessageCodec>*)createArgsCodec {
-    return [FlutterStandardMessageCodec sharedInstance];
+	return [FlutterStandardMessageCodec sharedInstance];
 }
 
 

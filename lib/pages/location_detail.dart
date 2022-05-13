@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/component/label_group.dart';
+import 'package:todo/component/platform_text.dart';
 import 'package:todo/const/route_argument.dart';
 
 class LocationDetailPage extends StatefulWidget {
@@ -32,7 +33,12 @@ class _LocationDetailPageState extends State<LocationDetailPage> {
           ),
           LabelGroup(
             labelText: '位置',
-            child: Text(argument.location.description),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints.tightFor(height: 16),
+              child: PlatformText(
+                text: argument.location.description,
+              ),
+            ),
           ),
         ],
       ),
