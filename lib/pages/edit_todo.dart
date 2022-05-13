@@ -107,6 +107,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
   Widget _buildForm() {
     return SingleChildScrollView(
       child: Form(
+        key: _formKey,
         child: Column(
           children: [
             _buildTextFormField(
@@ -132,28 +133,34 @@ class _EditTodoPageState extends State<EditTodoPage> {
                 _dateTextEditingController.text = _todo.date!.dateString;
               },
             ),
-            _buildTimeFormField(
-              '开始时间',
-              '请选择开始时间',
-              initialValue: _todo.startTime!,
-              controller: _startTimeEditingController,
-              onSelect: (value) {
-                _todo.startTime = value;
-                _startTimeEditingController.text = _todo.startTime!.timeString;
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildTimeFormField(
+                  '开始时间',
+                  '请选择开始时间',
+                  initialValue: _todo.startTime!,
+                  controller: _startTimeEditingController,
+                  onSelect: (value) {
+                    _todo.startTime = value;
+                    _startTimeEditingController.text = _todo.startTime!.timeString;
+                  },
+                ),
+                Expanded(
+                  child: _buildTimeFormField(
+                    '终止时间',
+                    '请选择终止时间',
+                    initialValue: _todo.endTime!,
+                    controller: _endTimeEditingController,
+                    onSelect: (value) {
+                      _todo.endTime = value;
+                      _endTimeEditingController.text = _todo.endTime!.timeString;
+                    },
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: _buildTimeFormField(
-                '终止时间',
-                '请选择终止时间',
-                initialValue: _todo.endTime!,
-                controller: _endTimeEditingController,
-                onSelect: (value) {
-                  _todo.endTime = value;
-                  _endTimeEditingController.text = _todo.endTime!.timeString;
-                },
-              ),
-            ),
+            _buildPriorityFormField('优先级'),
           ],
         ),
       ),
@@ -202,7 +209,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
       child: DateFieldGroup(
         onSelect: onSelect,
         initialDate: initialValue,
-        startDate: initialValue ?? DateTime(now.year, now.month, now.day - 1),
+        startDate: initialValue,
         endDate: DateTime(2025),
         child: TextFormField(
           controller: controller,
@@ -236,6 +243,47 @@ class _EditTodoPageState extends State<EditTodoPage> {
           controller: controller,
           decoration: InputDecoration(hintText: hintText, disabledBorder: _textFormBorder),
         ),
+      ),
+    );
+  }
+
+  Widget _buildPriorityFormField(
+    String title, {
+    TextEditingController? textController,
+    Function(Priority)? onSaved,
+  }) {
+    return LabelGroup(
+      labelText: title,
+      labelStyle: _labelTextStyle,
+      padding: _labelPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(_todo.priority.description),
+                Container(
+                  width: 100,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: 100,
+                    height: 50,
+                    color: _todo.priority.color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(
+            height: 1,
+            thickness: 1,
+            color: Colors.black26,
+          ),
+        ],
       ),
     );
   }
