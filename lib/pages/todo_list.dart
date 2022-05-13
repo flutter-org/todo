@@ -136,7 +136,7 @@ class TodoItem extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: Text(todo?.title ?? ''),
+                        child: Text(todo.title ?? ''),
                       ),
                     ],
                   ),

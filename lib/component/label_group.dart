@@ -23,7 +23,7 @@ class LabelGroup extends StatelessWidget {
         children: [
           Text(
             labelText,
-            style: labelStyle ?? Theme.of(context).inputDecorationTheme?.labelStyle,
+            style: labelStyle ?? Theme.of(context).inputDecorationTheme.labelStyle,
           ),
           child,
         ],

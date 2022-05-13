@@ -124,7 +124,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
       child: TextFormField(
         keyboardType: inputType,
         validator: (String? value) {
-          return (value != null && value!.isNotEmpty) ? null : '$title 不能为空';
+          return (value != null && value.isNotEmpty) ? null : '$title 不能为空';
         },
         onSaved: onSaved,
         textInputAction: TextInputAction.done,
