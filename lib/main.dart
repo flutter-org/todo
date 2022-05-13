@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: routes[TODO_ENTRY_PAGE_URL]!(context),
+      home: routes[LOGIN_PAGE_URL]!(context),
       onGenerateRoute: (RouteSettings settings) {
         if ([REGISTER_PAGE_URL, LOGIN_PAGE_URL].contains(settings.name)) {
           return PageRouteBuilder(
