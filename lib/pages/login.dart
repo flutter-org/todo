@@ -6,6 +6,7 @@ import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/login_center.dart';
 import 'package:todo/model/network_client.dart';
+import 'package:todo/res/assets_res.dart';
 import 'package:todo/utils/network.dart';
 
 class LoginPage extends StatefulWidget {
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    String markAssetName = 'assets/images/mark.png';
+    String markAssetName = AssetsRes.mark;
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();

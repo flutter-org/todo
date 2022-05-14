@@ -9,6 +9,7 @@ import 'package:todo/pages/about.dart';
 import 'package:todo/pages/calendar.dart';
 import 'package:todo/pages/reporter.dart';
 import 'package:todo/pages/todo_list.dart';
+import 'package:todo/res/assets_res.dart';
 import 'package:todo/utils/generate_todo.dart';
 
 class TodoEntryPage extends StatefulWidget {
@@ -124,15 +125,15 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
         items: [
-          _buildBottomNavigationBarItem('assets/images/lists.png'),
-          _buildBottomNavigationBarItem('assets/images/calendar.png'),
+          _buildBottomNavigationBarItem(AssetsRes.lists),
+          _buildBottomNavigationBarItem(AssetsRes.calendar),
           _buildBottomNavigationBarItem(
-            'assets/images/add.png',
+            AssetsRes.add,
             size: 50,
             singleImage: true,
           ),
-          _buildBottomNavigationBarItem('assets/images/report.png'),
-          _buildBottomNavigationBarItem('assets/images/about.png'),
+          _buildBottomNavigationBarItem(AssetsRes.report),
+          _buildBottomNavigationBarItem(AssetsRes.about),
         ],
       ),
       body: IndexedStack(

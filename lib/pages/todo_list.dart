@@ -5,6 +5,7 @@ import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/model/todo_list.dart';
+import 'package:todo/res/assets_res.dart';
 
 class TodoListPage extends StatefulWidget {
   final TodoList todoList;
@@ -174,7 +175,7 @@ class TodoItem extends StatelessWidget {
                           if (onFinished != null) onFinished!(todo);
                         },
                         child: Image.asset(
-                          todo.isFinished! ? 'assets/images/rect_selected.png' : 'assets/images/rect.png',
+                          todo.isFinished! ? AssetsRes.rect_selected : AssetsRes.rect,
                           width: 25,
                           height: 25,
                         ),
@@ -190,7 +191,7 @@ class TodoItem extends StatelessWidget {
                       if (onStar != null) onStar!(todo);
                     },
                     child: Image.asset(
-                      todo.isStar! ? 'assets/images/star.png' : 'assets/images/star_normal.png',
+                      todo.isStar! ? AssetsRes.star : AssetsRes.star_normal,
                       width: 25,
                       height: 25,
                     ),
@@ -200,7 +201,7 @@ class TodoItem extends StatelessWidget {
               Row(
                 children: [
                   Image.asset(
-                    'assets/images/group.png',
+                    AssetsRes.group,
                     width: 25,
                     height: 25,
                   ),

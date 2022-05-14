@@ -5,6 +5,7 @@ import 'package:todo/const/route_url.dart';
 import 'package:todo/model/login_center.dart';
 import 'package:todo/model/network_client.dart';
 import 'package:todo/model/todo_list.dart';
+import 'package:todo/res/assets_res.dart';
 
 class AboutPage extends StatefulWidget {
   final TodoList todoList;
@@ -36,7 +37,7 @@ class _AboutPageState extends State<AboutPage> {
                 child: FractionallySizedBox(
                   widthFactor: 0.3,
                   heightFactor: 0.3,
-                  child: ImageHero.asset('assets/images/mark.png'),
+                  child: ImageHero.asset(AssetsRes.mark),
                 ),
               ),
             ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo/const/route_url.dart';
+import 'package:todo/res/assets_res.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -90,9 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 backgroundColor: Colors.transparent,
                                 radius: 48,
                                 backgroundImage: (image == null
-                                    ? const AssetImage(
-                                        'assets/images/default_avatar.png',
-                                      )
+                                    ? const AssetImage(AssetsRes.default_avatar)
                                     : FileImage(image!)) as ImageProvider,
                               ),
                               Positioned(
