@@ -38,6 +38,7 @@ dependencies:
   uuid: ^3.0.6
   mock_data: ^2.0.0
   webview_flutter: ^3.0.4
+  table_calendar: ^3.0.5
 
 dev_dependencies:
   flutter_test:
