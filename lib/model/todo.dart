@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:todo/extension/date_time.dart';
 import 'package:uuid/uuid.dart';
 
@@ -95,6 +96,7 @@ class Location {
         longitude = 0;
 }
 
+@JsonSerializable()
 class Todo {
   /// id
   String? id;
