@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todo/model/todo_list.dart';
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({Key? key}) : super(key: key);
+  final TodoList todoList;
+
+  const CalendarPage({
+    Key? key,
+    required this.todoList,
+  }) : super(key: key);
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();

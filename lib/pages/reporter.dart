@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todo/model/todo_list.dart';
 
 class ReporterPage extends StatefulWidget {
-  const ReporterPage({Key? key}) : super(key: key);
+  final TodoList todoList;
+
+  const ReporterPage({
+    Key? key,
+    required this.todoList,
+  }) : super(key: key);
 
   @override
   State<ReporterPage> createState() => _ReporterPageState();

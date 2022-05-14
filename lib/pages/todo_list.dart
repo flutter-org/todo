@@ -5,10 +5,14 @@ import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/model/todo_list.dart';
-import 'package:todo/utils/generate_todo.dart';
 
 class TodoListPage extends StatefulWidget {
-  const TodoListPage({Key? key}) : super(key: key);
+  final TodoList todoList;
+
+  const TodoListPage({
+    Key? key,
+    required this.todoList,
+  }) : super(key: key);
 
   @override
   TodoListPageState createState() => TodoListPageState();
@@ -21,7 +25,7 @@ class TodoListPageState extends State<TodoListPage> {
   @override
   void initState() {
     super.initState();
-    todoList = TodoList(generateTodos(3));
+    todoList = widget.todoList;
   }
 
   void addTodo(Todo todo) {

@@ -3,10 +3,12 @@ import 'package:todo/config/colors.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/todo.dart';
+import 'package:todo/model/todo_list.dart';
 import 'package:todo/pages/about.dart';
 import 'package:todo/pages/calendar.dart';
 import 'package:todo/pages/reporter.dart';
 import 'package:todo/pages/todo_list.dart';
+import 'package:todo/utils/generate_todo.dart';
 
 class TodoEntryPage extends StatefulWidget {
   const TodoEntryPage({Key? key}) : super(key: key);
@@ -19,16 +21,18 @@ class _TodoEntryPageState extends State<TodoEntryPage> {
   late int currentIndex;
   late List<Widget> pages;
   GlobalKey<TodoListPageState> todoListPageState = GlobalKey<TodoListPageState>();
+  late TodoList todoList;
 
   @override
   void initState() {
     super.initState();
     currentIndex = 0;
+    todoList = TodoList(generateTodos(3));
     pages = [
-      TodoListPage(key: todoListPageState),
-      const CalendarPage(),
+      TodoListPage(key: todoListPageState, todoList: todoList),
+      CalendarPage(todoList: todoList),
       Container(),
-      const ReporterPage(),
+      ReporterPage(todoList: todoList),
       const AboutPage(),
     ];
   }

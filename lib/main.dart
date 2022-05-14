@@ -24,10 +24,6 @@ final Map<String, WidgetBuilder> routes = {
   EDIT_TODO_PAGE_URL: (context) => const EditTodoPage(),
   LOCATION_DETAIL_PAGE_URL: (context) => const LocationDetailPage(),
   WEB_VIEW_PAGE_URL: (context) => const WebViewPage(),
-  ABOUT_PAGE_URL: (context) => const AboutPage(),
-  CALENDAR_PAGE_URL: (context) => const CalendarPage(),
-  REPORTER_PAGE_URL: (context) => const ReporterPage(),
-  TODO_LIST_PAGE_URL: (context) => const TodoListPage(),
 };
 
 class MyApp extends StatelessWidget {
