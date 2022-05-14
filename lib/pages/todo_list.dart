@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/component/delete_todo_dialog.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
@@ -8,12 +9,7 @@ import 'package:todo/model/todo_list.dart';
 import 'package:todo/res/assets_res.dart';
 
 class TodoListPage extends StatefulWidget {
-  final TodoList todoList;
-
-  const TodoListPage({
-    Key? key,
-    required this.todoList,
-  }) : super(key: key);
+  const TodoListPage({Key? key}) : super(key: key);
 
   @override
   TodoListPageState createState() => TodoListPageState();
@@ -26,7 +22,7 @@ class TodoListPageState extends State<TodoListPage> {
   @override
   void initState() {
     super.initState();
-    todoList = widget.todoList;
+    todoList = context.read<TodoList>();
     todoList.addListener(_updateTodoList);
   }
 
@@ -36,12 +32,11 @@ class TodoListPageState extends State<TodoListPage> {
       setState(() {});
     } else if (changeInfo.type == TodoListChangeType.Delete) {
       Todo todo = changeInfo.todoList[changeInfo.insertOrRemoveIndex];
-      animatedListKey.currentState?.removeItem(changeInfo.insertOrRemoveIndex, (context, animation) {
+      animatedListKey.currentState?.removeItem(changeInfo.insertOrRemoveIndex,
+          (BuildContext context, Animation<double> animation) {
         return SizeTransition(
           sizeFactor: animation,
-          child: TodoItem(
-            todo: todo,
-          ),
+          child: TodoItem(todo: todo),
         );
       });
     } else if (changeInfo.type == TodoListChangeType.Insert) {
@@ -78,10 +73,11 @@ class TodoListPageState extends State<TodoListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('清单'),
       ),
       body: RefreshIndicator(
-        onRefresh: () => widget.todoList.syncWithNetwork(),
+        onRefresh: () => todoList.syncWithNetwork(),
         child: AnimatedList(
             key: animatedListKey,
             initialItemCount: todoList.length,

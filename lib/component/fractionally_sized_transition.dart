@@ -3,23 +3,11 @@ import 'package:flutter/material.dart';
 class FractionallySizedTransition extends AnimatedWidget {
   final Widget? child;
 
-  FractionallySizedTransition({
+  const FractionallySizedTransition({
     Key? key,
-    double beginFactor = 0.1,
-    double endFactor = 1.0,
-    required AnimationController controller,
+    required Animation<double> factor,
     this.child,
-  }) : super(key: key, listenable: _buildAnimation(controller));
-
-  static Animation<double> _buildAnimation(AnimationController controller) {
-    Animation<double> parentAnimation = CurvedAnimation(
-      parent: controller,
-      curve: Curves.bounceIn,
-    );
-    Tween<double> tween = Tween<double>(begin: 0.4, end: 0.5);
-    Animation<double> animation = tween.animate(parentAnimation);
-    return animation;
-  }
+  }) : super(key: key, listenable: factor);
 
   @override
   Widget build(BuildContext context) {

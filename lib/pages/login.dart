@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  late Animation<double> _animation;
   late AnimationController _animationController;
 
   @override
@@ -39,6 +40,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       vsync: this,
       duration: const Duration(microseconds: 1000),
     );
+    Animation<double> parentAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.bounceIn,
+    );
+    Tween<double> tween = Tween<double>(begin: 0.4, end: 0.5);
+    _animation = tween.animate(parentAnimation);
     _animationController.forward().then((value) => _animationController.reverse());
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -60,6 +67,16 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     setState(() {
       canLogin = isInputValid;
     });
+  }
+
+  void _gotoRegister() {
+    Navigator.of(context).pushReplacementNamed(
+      REGISTER_PAGE_URL,
+      arguments: RegisterPageArgument(
+        'LoginPage',
+        LOGIN_PAGE_URL,
+      ),
+    );
   }
 
   void _login() async {
@@ -102,12 +119,13 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     String markAssetName = AssetsRes.mark;
     return GestureDetector(
       onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: ConstrainedBox(
+            //利用MediaQuery来获取屏幕的高度
             constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height,
             ),
@@ -117,9 +135,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   Expanded(
                     child: Center(
                       child: FractionallySizedTransition(
-                        controller: _animationController,
-                        beginFactor: 0.4,
-                        endFactor: 0.5,
+                        factor: _animation,
                         child: useHero ? ImageHero.asset(markAssetName) : Image.asset(markAssetName),
                       ),
                     ),
@@ -139,6 +155,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                   labelText: '邮箱',
                                 ),
                                 textInputAction: TextInputAction.next,
+                                onSubmitted: (String value) {
+                                  FocusScope.of(context).nextFocus();
+                                },
                                 onChanged: _checkInputValid,
                                 controller: _emailController,
                               ),
@@ -174,16 +193,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             children: [
                               const Text('没有账号? '),
                               InkWell(
+                                onTap: _gotoRegister,
                                 child: const Text('立即注册'),
-                                onTap: () {
-                                  Navigator.of(context).pushReplacementNamed(
-                                    REGISTER_PAGE_URL,
-                                    arguments: RegisterPageArgument(
-                                      'LoginPage',
-                                      LOGIN_PAGE_URL,
-                                    ),
-                                  );
-                                },
                               ),
                             ],
                           ),

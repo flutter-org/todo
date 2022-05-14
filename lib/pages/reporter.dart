@@ -66,7 +66,10 @@ class _ReporterPageState extends State<ReporterPage> {
   void _onTap(Todo todo) async {
     Todo? changedTodo = await Navigator.of(context).pushNamed(
       EDIT_TODO_PAGE_URL,
-      arguments: EditTodoPageArgument(openType: OpenType.Preview, todo: todo),
+      arguments: EditTodoPageArgument(
+        openType: OpenType.Preview,
+        todo: todo,
+      ),
     );
     if (changedTodo == null) {
       return;

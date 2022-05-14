@@ -40,8 +40,8 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
     userKey = arguments.userKey;
     _todoList = TodoList(userKey);
     pages = [
-      TodoListPage(key: todoListPageState, todoList: _todoList),
-      CalendarPage(todoList: _todoList),
+      const TodoListPage(),
+      const CalendarPage(),
       Container(),
       const ReporterPage(),
       const AboutPage(),

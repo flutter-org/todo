@@ -20,101 +20,97 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
-    TodoList? todoList = TodoListInheritedWidget.of(context)!.todoList;
-    String? userKey = UserKeyInheritedWidget.of(context)!.userKey;
-    return UserKeyInheritedWidget(
-      userKey: userKey,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('关于'),
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: FractionallySizedBox(
-                    widthFactor: 0.3,
-                    heightFactor: 0.3,
-                    child: ImageHero.asset(AssetsRes.mark),
-                  ),
+    TodoList? todoList = context.watch<TodoList>();
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('关于'),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: FractionallySizedBox(
+                  widthFactor: 0.3,
+                  heightFactor: 0.3,
+                  child: ImageHero.asset(AssetsRes.mark),
                 ),
               ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: const [
-                          Center(
-                            child: Text(
-                              'Funny Flutter Todo',
-                              style: TextStyle(fontSize: 25),
-                            ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, bottom: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
+                        Center(
+                          child: Text(
+                            'Funny Flutter Todo',
+                            style: TextStyle(fontSize: 25),
                           ),
-                          Center(
-                            child: Text('版本 1.0.0'),
-                          ),
-                        ],
+                        ),
+                        Center(
+                          child: Text('版本 1.0.0'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        WEB_VIEW_PAGE_URL,
+                        arguments: WebViewArgument(
+                          'https://flutter.cn/',
+                          '隐私政策',
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      '隐私政策',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        decoration: TextDecoration.underline,
+                        decorationStyle: TextDecorationStyle.dotted,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          WEB_VIEW_PAGE_URL,
-                          arguments: WebViewArgument(
-                            'https://flutter.cn/',
-                            '隐私政策',
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 24,
+                      right: 24,
+                      top: 12,
+                      bottom: 12,
+                    ),
+                    child: Consumer<String>(
+                      builder: (_, String userKey, __) {
+                        return TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.red),
+                          ),
+                          onPressed: () async {
+                            await NetworkClient.instance().uploadList(
+                              todoList!.list,
+                              userKey,
+                            );
+                            await LoginCenter.instance().logout();
+                            Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
+                          },
+                          child: const Text(
+                            '退出登录',
+                            style: TextStyle(color: Colors.white),
                           ),
                         );
                       },
-                      child: const Text(
-                        '隐私政策',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          decoration: TextDecoration.underline,
-                          decorationStyle: TextDecorationStyle.dotted,
-                        ),
-                      ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 24,
-                        right: 24,
-                        top: 12,
-                        bottom: 12,
-                      ),
-                      child: Consumer<String>(
-                        builder: (_, String userKey, __) {
-                          return TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.red),
-                            ),
-                            onPressed: () async {
-                              await NetworkClient.instance().uploadList(
-                                todoList!.list,
-                                userKey,
-                              );
-                              await LoginCenter.instance().logout();
-                              Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
-                            },
-                            child: const Text(
-                              '退出登录',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
