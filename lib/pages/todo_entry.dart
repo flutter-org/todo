@@ -27,7 +27,6 @@ class _TodoEntryPageState extends State<TodoEntryPage> {
   void initState() {
     super.initState();
     currentIndex = 0;
-    todoList = TodoList(generateTodos(3));
     pages = [
       TodoListPage(key: todoListPageState, todoList: todoList),
       CalendarPage(todoList: todoList),
@@ -35,6 +34,14 @@ class _TodoEntryPageState extends State<TodoEntryPage> {
       ReporterPage(todoList: todoList),
       const AboutPage(),
     ];
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    TodoEntryArgument arguments = ModalRoute.of(context)?.settings.arguments as TodoEntryArgument;
+    String userKey = arguments.userKey;
+    todoList = TodoList(userKey);
   }
 
   BottomNavigationBarItem _buildBottomNavigationBarItem(

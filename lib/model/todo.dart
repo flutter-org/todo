@@ -1,6 +1,30 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:todo/extension/date_time.dart';
 import 'package:uuid/uuid.dart';
+
+const String ID = 'id';
+const String TITLE = 'title';
+const String DESCRIPTION = 'description';
+const String DATE = 'date';
+const String START_TIME = 'start_time';
+const String END_TIME = 'end_time';
+const String PRIORITY = 'priority';
+const String IS_FINISHED = 'is_finished';
+const String IS_STAR = 'is_star';
+const String LOCATION_LATITUDE = 'location_latitude';
+const String LOCATION_LONGITUDE = 'location_longitude';
+const String LOCATION_DESCRIPTION = 'location_description';
+
+timeOfDayToString(TimeOfDay? timeOfDay) => '${timeOfDay?.hour}:${timeOfDay?.minute}';
+
+timeOFDayFromString(String string) {
+  return TimeOfDay(
+    hour: int.parse(string.split(':').first),
+    minute: int.parse(string.split(':').last),
+  );
+}
 
 class Priority {
   /// 优先级对应的数值,如 0
@@ -133,4 +157,40 @@ class Todo {
   static const Uuid _uuid = Uuid();
 
   static String generateNewId() => _uuid.v1();
+
+  Map<String, dynamic> toMap() {
+    return {
+      ID: id,
+      TITLE: title,
+      DESCRIPTION: description,
+      DATE: date?.millisecondsSinceEpoch.toString(),
+      START_TIME: timeOfDayToString(startTime),
+      END_TIME: timeOfDayToString(endTime),
+      PRIORITY: priority.value,
+      IS_FINISHED: (isFinished != null && isFinished == true) ? 1 : 0,
+      IS_STAR: (isStar != null && isStar == true) ? 1 : 0,
+      LOCATION_LATITUDE: location?.latitude?.toString() ?? '0',
+      LOCATION_LONGITUDE: location?.longitude?.toString() ?? '0',
+      LOCATION_DESCRIPTION: location?.description ?? '',
+    };
+  }
+
+  static Todo fromMap(Map<String, dynamic> map) {
+    return Todo(
+      id: map[ID],
+      title: map[TITLE],
+      description: map[DESCRIPTION],
+      date: DateTime.fromMillisecondsSinceEpoch(int.parse(map[DATE])),
+      startTime: timeOFDayFromString(map[START_TIME]),
+      endTime: timeOFDayFromString(map[END_TIME]),
+      priority: Priority.values.firstWhere((p) => p.value == map[PRIORITY]),
+      isFinished: map[IS_FINISHED] == 1 ? true : false,
+      isStar: map[IS_STAR] == 1 ? true : false,
+      location: Location(
+        longitude: double.parse(map[LOCATION_LONGITUDE]),
+        latitude: double.parse(map[LOCATION_LATITUDE]),
+        description: map[LOCATION_DESCRIPTION],
+      ),
+    );
+  }
 }
