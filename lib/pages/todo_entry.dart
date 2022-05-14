@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/component/todo_list_inherited_widget.dart';
 import 'package:todo/config/colors.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
@@ -23,7 +24,7 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
   late int currentIndex;
   late List<Widget> pages;
   GlobalKey<TodoListPageState> todoListPageState = GlobalKey<TodoListPageState>();
-  late TodoList todoList;
+  late TodoList _todoList;
   late String userKey;
 
   @override
@@ -38,13 +39,13 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
     super.didChangeDependencies();
     TodoEntryArgument arguments = ModalRoute.of(context)?.settings.arguments as TodoEntryArgument;
     userKey = arguments.userKey;
-    todoList = TodoList(userKey);
+    _todoList = TodoList(userKey);
     pages = [
-      TodoListPage(key: todoListPageState, todoList: todoList),
-      CalendarPage(todoList: todoList),
+      TodoListPage(key: todoListPageState, todoList: _todoList),
+      CalendarPage(todoList: _todoList),
       Container(),
-      ReporterPage(todoList: todoList),
-      AboutPage(todoList: todoList, userKey: userKey),
+      ReporterPage(todoList: _todoList),
+      const AboutPage(),
     ];
   }
 
@@ -58,11 +59,11 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // 应用进入后台时的回调
     if (state == AppLifecycleState.paused) {
-      NetworkClient.instance().uploadList(todoList.list, userKey);
+      NetworkClient.instance().uploadList(_todoList.list, userKey);
     }
     // 应用进到前台时的回调
     if (state == AppLifecycleState.resumed) {
-      todoList.syncWithNetwork();
+      _todoList.syncWithNetwork();
     }
     super.didChangeAppLifecycleState(state);
   }
@@ -119,26 +120,29 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _onTabChange,
-        currentIndex: currentIndex,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          _buildBottomNavigationBarItem(AssetsRes.lists),
-          _buildBottomNavigationBarItem(AssetsRes.calendar),
-          _buildBottomNavigationBarItem(
-            AssetsRes.add,
-            size: 50,
-            singleImage: true,
-          ),
-          _buildBottomNavigationBarItem(AssetsRes.report),
-          _buildBottomNavigationBarItem(AssetsRes.about),
-        ],
-      ),
-      body: IndexedStack(
-        index: currentIndex,
-        children: pages,
+    return TodoListInheritedWidget(
+      todoList: _todoList,
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: _onTabChange,
+          currentIndex: currentIndex,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            _buildBottomNavigationBarItem(AssetsRes.lists),
+            _buildBottomNavigationBarItem(AssetsRes.calendar),
+            _buildBottomNavigationBarItem(
+              AssetsRes.add,
+              size: 50,
+              singleImage: true,
+            ),
+            _buildBottomNavigationBarItem(AssetsRes.report),
+            _buildBottomNavigationBarItem(AssetsRes.about),
+          ],
+        ),
+        body: IndexedStack(
+          index: currentIndex,
+          children: pages,
+        ),
       ),
     );
   }
