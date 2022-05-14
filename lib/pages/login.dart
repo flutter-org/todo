@@ -27,6 +27,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     super.initState();
     canLogin = true;
     useHero = true;
+    // _emailController.text = 'foo@qq.com';
+    // _passwordController.text = 'foobar';
+    // 3秒后再返回信息
+    _emailController.text = 'lazy@qq.com';
+    _passwordController.text = 'lazylazy';
 
     _animationController = AnimationController(
       vsync: this,
