@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:todo/model/todo.dart';
@@ -23,9 +24,17 @@ create table $TABLE_NAME (
 )
 ''';
 
+const String EDIT_TIME_KEY = 'todo_list_edit_timestamp';
+
 class DbProvider {
   final String _dbKey;
   Database? _database;
+  SharedPreferences? _sharedPreferences;
+  DateTime _editTime = DateTime.fromMillisecondsSinceEpoch(0);
+
+  DateTime get editTime => _editTime;
+
+  String get editTimeKey => '$EDIT_TIME_KEY-$_dbKey';
 
   DbProvider(this._dbKey);
 
@@ -37,15 +46,20 @@ class DbProvider {
         await database.execute(CREATE_TABLE_SQL);
       },
     );
+    _sharedPreferences ??= await SharedPreferences.getInstance();
   }
 
   Future<List<Todo>> loadFromDataBase() async {
     await _initDataBase();
+    if (_sharedPreferences!.containsKey(editTimeKey)) {
+      _editTime = DateTime.fromMillisecondsSinceEpoch(_sharedPreferences!.getInt(editTimeKey)!);
+    }
     List<Map<String, dynamic>> dbRecords = await _database!.query(TABLE_NAME);
     return dbRecords.map((item) => Todo.fromMap(item)).toList();
   }
 
   Future<int> add(Todo todo) async {
+    _updateEditTime();
     return _database!.insert(
       TABLE_NAME,
       todo.toMap(),
@@ -54,6 +68,7 @@ class DbProvider {
   }
 
   Future<int> remove(Todo todo) async {
+    _updateEditTime();
     return _database!.delete(
       TABLE_NAME,
       where: '$ID = ?',
@@ -62,11 +77,17 @@ class DbProvider {
   }
 
   Future<int> update(Todo todo) async {
+    _updateEditTime();
     return _database!.update(
       TABLE_NAME,
       todo.toMap(),
       where: '$ID = ?',
       whereArgs: [todo.id],
     );
+  }
+
+  void _updateEditTime() {
+    _editTime = DateTime.now();
+    _sharedPreferences!.setInt(editTimeKey, _editTime.millisecondsSinceEpoch);
   }
 }

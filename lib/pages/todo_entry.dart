@@ -53,11 +53,15 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
     WidgetsBinding.instance.removeObserver(this);
   }
 
-  /// 应用进入后台时的回调
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // 应用进入后台时的回调
     if (state == AppLifecycleState.paused) {
       NetworkClient.instance().uploadList(todoList.list, userKey);
+    }
+    // 应用进到前台时的回调
+    if (state == AppLifecycleState.resumed) {
+      todoList.syncWithNetwork();
     }
     super.didChangeAppLifecycleState(state);
   }

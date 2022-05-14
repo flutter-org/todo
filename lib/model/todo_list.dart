@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:todo/model/db_provider.dart';
+import 'package:todo/model/network_client.dart';
 import 'package:todo/model/todo.dart';
 
 enum TodoListChangeType {
@@ -121,5 +122,17 @@ class TodoList extends ValueNotifier<TodoListChangeInfo> {
       }
       return a.endTime!.hour - b.endTime!.hour;
     });
+  }
+
+  Future<void> syncWithNetwork() async {
+    FetchListResult result = await NetworkClient.instance().fetchList(userKey);
+    if (result.error.isEmpty) {
+      await NetworkClient.instance().uploadList(list, userKey);
+    } else {
+      for (var e in List.from(_todoList)) {
+        remove(e.id);
+      }
+      result.data?.forEach((e) => add(e));
+    }
   }
 }
