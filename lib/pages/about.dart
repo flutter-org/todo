@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/component/image_hero.dart';
 import 'package:todo/component/todo_list_inherited_widget.dart';
 import 'package:todo/component/user_key_inherited_widget.dart';
@@ -87,22 +88,26 @@ class _AboutPageState extends State<AboutPage> {
                         top: 12,
                         bottom: 12,
                       ),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.red),
-                        ),
-                        onPressed: () async {
-                          await NetworkClient.instance().uploadList(
-                            todoList!.list,
-                            userKey!,
+                      child: Consumer<String>(
+                        builder: (_, String userKey, __) {
+                          return TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.red),
+                            ),
+                            onPressed: () async {
+                              await NetworkClient.instance().uploadList(
+                                todoList!.list,
+                                userKey,
+                              );
+                              await LoginCenter.instance().logout();
+                              Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
+                            },
+                            child: const Text(
+                              '退出登录',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           );
-                          await LoginCenter.instance().logout();
-                          Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
                         },
-                        child: const Text(
-                          '退出登录',
-                          style: TextStyle(color: Colors.white),
-                        ),
                       ),
                     ),
                   ],

@@ -158,6 +158,16 @@ class Todo {
 
   static String generateNewId() => _uuid.v1();
 
+  TodoStatus get status {
+    if (isFinished != null && isFinished == true) {
+      return TodoStatus.finished;
+    }
+    if (date != null && date!.isBefore(DateTime.now())) {
+      return TodoStatus.delay;
+    }
+    return TodoStatus.unspecified;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       ID: id,
@@ -193,4 +203,28 @@ class Todo {
       ),
     );
   }
+}
+
+class TodoStatus {
+  /// 完成状态对应的数值,如 0
+  final int value;
+
+  /// 完成状态对应的文字描述,如"已完成"
+  final String description;
+
+  /// 完成状态对应的颜色,如红色
+  final Color color;
+
+  const TodoStatus._(this.value, this.description, this.color);
+
+  /// 下面定义了允许用户使用的4个枚举值
+  static const TodoStatus unspecified = TodoStatus._(0, '未安排', Color(0xff8c88ff));
+  static const TodoStatus finished = TodoStatus._(1, '已完成', Color(0xff51d2c2));
+  static const TodoStatus delay = TodoStatus._(2, '已延期', Color(0xffffb258));
+
+  static const List<TodoStatus> values = [
+    unspecified,
+    finished,
+    delay,
+  ];
 }

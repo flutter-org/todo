@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/component/todo_list_inherited_widget.dart';
 import 'package:todo/config/colors.dart';
 import 'package:todo/const/route_argument.dart';
@@ -44,7 +45,7 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
       TodoListPage(key: todoListPageState, todoList: _todoList),
       CalendarPage(todoList: _todoList),
       Container(),
-      ReporterPage(todoList: _todoList),
+      const ReporterPage(),
       const AboutPage(),
     ];
   }
@@ -120,8 +121,8 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
-    return TodoListInheritedWidget(
-      todoList: _todoList,
+    return ChangeNotifierProvider<TodoList>.value(
+      value: _todoList,
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           onTap: _onTabChange,
