@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/config/colors.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
+import 'package:todo/model/network_client.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/model/todo_list.dart';
 import 'package:todo/pages/about.dart';
@@ -17,31 +18,48 @@ class TodoEntryPage extends StatefulWidget {
   State<TodoEntryPage> createState() => _TodoEntryPageState();
 }
 
-class _TodoEntryPageState extends State<TodoEntryPage> {
+class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserver {
   late int currentIndex;
   late List<Widget> pages;
   GlobalKey<TodoListPageState> todoListPageState = GlobalKey<TodoListPageState>();
   late TodoList todoList;
+  late String userKey;
 
   @override
   void initState() {
     super.initState();
     currentIndex = 0;
-    pages = [
-      TodoListPage(key: todoListPageState, todoList: todoList),
-      CalendarPage(todoList: todoList),
-      Container(),
-      ReporterPage(todoList: todoList),
-      const AboutPage(),
-    ];
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     TodoEntryArgument arguments = ModalRoute.of(context)?.settings.arguments as TodoEntryArgument;
-    String userKey = arguments.userKey;
+    userKey = arguments.userKey;
     todoList = TodoList(userKey);
+    pages = [
+      TodoListPage(key: todoListPageState, todoList: todoList),
+      CalendarPage(todoList: todoList),
+      Container(),
+      ReporterPage(todoList: todoList),
+      AboutPage(todoList: todoList, userKey: userKey),
+    ];
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  /// 应用进入后台时的回调
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      NetworkClient.instance().uploadList(todoList.list, userKey);
+    }
+    super.didChangeAppLifecycleState(state);
   }
 
   BottomNavigationBarItem _buildBottomNavigationBarItem(

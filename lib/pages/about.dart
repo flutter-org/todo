@@ -3,9 +3,18 @@ import 'package:todo/component/image_hero.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/login_center.dart';
+import 'package:todo/model/network_client.dart';
+import 'package:todo/model/todo_list.dart';
 
 class AboutPage extends StatefulWidget {
-  const AboutPage({Key? key}) : super(key: key);
+  final TodoList todoList;
+  final String userKey;
+
+  const AboutPage({
+    Key? key,
+    required this.todoList,
+    required this.userKey,
+  }) : super(key: key);
 
   @override
   State<AboutPage> createState() => _AboutPageState();
@@ -83,6 +92,10 @@ class _AboutPageState extends State<AboutPage> {
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
                       onPressed: () async {
+                        await NetworkClient.instance().uploadList(
+                          widget.todoList.list,
+                          widget.userKey,
+                        );
                         await LoginCenter.instance().logout();
                         Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
                       },
