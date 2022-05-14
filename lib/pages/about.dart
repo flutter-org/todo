@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/component/image_hero.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
+import 'package:todo/model/login_center.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('关于'),
       ),
       body: Center(
@@ -80,7 +82,8 @@ class _AboutPageState extends State<AboutPage> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        await LoginCenter.instance().logout();
                         Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
                       },
                       child: const Text(

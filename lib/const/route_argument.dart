@@ -37,3 +37,9 @@ class WebViewArgument {
 
   WebViewArgument(this.url, this.title);
 }
+
+class TodoEntryArgument {
+  final String userKey;
+
+  TodoEntryArgument(this.userKey);
+}

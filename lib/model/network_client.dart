@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 const Map<String, String> commonHeaders = {'Content-Type': 'application/json'};
 final String baseUrl = Platform.isAndroid ? 'http://10.0.2.2:8989' : 'http://localhost:8989';
 
+/// 单例对象
 class NetworkClient {
   NetworkClient._();
 
