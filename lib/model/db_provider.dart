@@ -2,7 +2,6 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'package:todo/model/todo.dart';
 
 const String DB_NAME = 'todo_list.db';

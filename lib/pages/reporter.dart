@@ -17,7 +17,7 @@ class _ReporterPageState extends State<ReporterPage> {
   late final TodoList _todoList;
   int _finishedTodoCount = 0;
   int _delayedTodoCount = 0;
-  List<Todo> _todosOfThisMonth = [];
+  final List<Todo> _todosOfThisMonth = [];
   int currentMonth = 1;
 
   @override

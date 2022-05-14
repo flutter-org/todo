@@ -57,8 +57,6 @@ class _RegisterPageState extends State<RegisterPage> {
     if (!canRegister) {
       return;
     }
-    String email = _emailController.text;
-    String password = _passwordController.text;
     Navigator.of(context).pushReplacementNamed(TODO_ENTRY_PAGE_URL);
   }
 

@@ -56,16 +56,12 @@ class Priority {
   factory Priority(int priority) => values.firstWhere((Priority e) => e.value == priority, orElse: () => Low);
 
   /// 下面定一个了允许用户使用的4个枚举值
-  // ignore: constant_identifier_names
   static const Priority High = Priority._(0, '高优先级', Color(0xFFE53B3B));
 
-  // ignore: constant_identifier_names
   static const Priority Medium = Priority._(1, '中优先级', Color(0xFFFF9400));
 
-  // ignore: constant_identifier_names
   static const Priority Low = Priority._(2, '低优先级', Color(0xFF14D4F4));
 
-  // ignore: constant_identifier_names
   static const Priority Unspecific = Priority._(3, '无优先级', Color(0xFF50D2C2));
 
   static const List<Priority> values = [
@@ -179,9 +175,9 @@ class Todo {
       PRIORITY: priority.value,
       IS_FINISHED: (isFinished != null && isFinished == true) ? 1 : 0,
       IS_STAR: (isStar != null && isStar == true) ? 1 : 0,
-      LOCATION_LATITUDE: location?.latitude?.toString() ?? '0',
-      LOCATION_LONGITUDE: location?.longitude?.toString() ?? '0',
-      LOCATION_DESCRIPTION: location?.description ?? '',
+      LOCATION_LATITUDE: location.latitude.toString(),
+      LOCATION_LONGITUDE: location.longitude.toString(),
+      LOCATION_DESCRIPTION: location.description,
     };
   }
 

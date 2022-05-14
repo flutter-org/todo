@@ -4,7 +4,7 @@ import 'package:todo/model/todo_list.dart';
 class TodoListInheritedWidget extends InheritedWidget {
   final TodoList? todoList;
 
-  TodoListInheritedWidget({
+  const TodoListInheritedWidget({
     Key? key,
     this.todoList,
     required Widget child,

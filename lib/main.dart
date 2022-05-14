@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/model/todo.dart';
-import 'package:todo/pages/about.dart';
-import 'package:todo/pages/calendar.dart';
 import 'package:todo/pages/edit_todo.dart';
 import 'package:todo/pages/location_detail.dart';
 import 'package:todo/pages/login.dart';
 import 'package:todo/pages/register.dart';
-import 'package:todo/pages/reporter.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/pages/todo_entry.dart';
-import 'package:todo/pages/todo_list.dart';
 import 'package:todo/pages/webview.dart';
 
 void main() {

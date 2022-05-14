@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/component/todo_list_inherited_widget.dart';
 import 'package:todo/config/colors.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
@@ -12,7 +11,6 @@ import 'package:todo/pages/calendar.dart';
 import 'package:todo/pages/reporter.dart';
 import 'package:todo/pages/todo_list.dart';
 import 'package:todo/res/assets_res.dart';
-import 'package:todo/utils/generate_todo.dart';
 
 class TodoEntryPage extends StatefulWidget {
   const TodoEntryPage({Key? key}) : super(key: key);

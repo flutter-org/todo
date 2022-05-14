@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
 
   void _goToLoginOrTodoEntry(BuildContext context) async {
     String? currentUserKey = await LoginCenter.instance().currentUserKey();
-    if (currentUserKey == null || currentUserKey!.isEmpty) {
+    if (currentUserKey == null || currentUserKey.isEmpty) {
       Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
     } else {
       Navigator.of(context).pushReplacementNamed(

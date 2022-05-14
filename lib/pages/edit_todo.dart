@@ -56,7 +56,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
     super.didChangeDependencies();
     EditTodoPageArgument? arguments = ModalRoute.of(context)?.settings.arguments as EditTodoPageArgument;
     _openType = arguments.openType;
-    _todo = arguments?.todo ?? Todo();
+    _todo = arguments.todo ?? Todo();
     _dateTextEditingController.text = _todo.date!.dateString;
     _startTimeEditingController.text = _todo.startTime!.timeString;
     _endTimeEditingController.text = _todo.endTime!.timeString;
@@ -215,7 +215,6 @@ class _EditTodoPageState extends State<EditTodoPage> {
     TextEditingController? controller,
     Function(DateTime)? onSelect,
   }) {
-    DateTime now = DateTime.now();
     return LabelGroup(
       labelText: title,
       labelStyle: _labelTextStyle,
@@ -264,11 +263,7 @@ class _EditTodoPageState extends State<EditTodoPage> {
     );
   }
 
-  Widget _buildPriorityFormField(
-    String title, {
-    TextEditingController? textController,
-    Function(Priority)? onSaved,
-  }) {
+  Widget _buildPriorityFormField(String title) {
     return LabelGroup(
       labelText: title,
       labelStyle: _labelTextStyle,
