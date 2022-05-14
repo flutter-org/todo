@@ -26,12 +26,38 @@ class TodoListPageState extends State<TodoListPage> {
   void initState() {
     super.initState();
     todoList = widget.todoList;
+    todoList.addListener(_updateTodoList);
+  }
+
+  void _updateTodoList() {
+    TodoListChangeInfo changeInfo = todoList.value;
+    if (changeInfo.type == TodoListChangeType.Update) {
+      setState(() {});
+    } else if (changeInfo.type == TodoListChangeType.Delete) {
+      Todo todo = changeInfo.todoList[changeInfo.insertOrRemoveIndex];
+      animatedListKey.currentState?.removeItem(changeInfo.insertOrRemoveIndex, (context, animation) {
+        return SizeTransition(
+          sizeFactor: animation,
+          child: TodoItem(
+            todo: todo,
+          ),
+        );
+      });
+    } else if (changeInfo.type == TodoListChangeType.Insert) {
+      animatedListKey.currentState?.insertItem(changeInfo.insertOrRemoveIndex);
+    } else {
+      // 编写逻辑
+    }
+  }
+
+  @override
+  void dispose() {
+    todoList.removeListener(_updateTodoList);
+    super.dispose();
   }
 
   void addTodo(Todo todo) {
     todoList.add(todo);
-    int index = todoList.list.indexOf(todo);
-    animatedListKey.currentState?.insertItem(index);
   }
 
   void removeTodo(Todo todo) async {
@@ -43,16 +69,7 @@ class TodoListPageState extends State<TodoListPage> {
           );
         });
     if (result) {
-      int index = todoList.list.indexOf(todo);
       todoList.remove(todo.id!);
-      animatedListKey.currentState?.removeItem(index, (context, animation) {
-        return SizeTransition(
-          sizeFactor: animation,
-          child: TodoItem(
-            todo: todo,
-          ),
-        );
-      });
     }
   }
 

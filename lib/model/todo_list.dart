@@ -1,9 +1,32 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/material.dart';
 import 'package:todo/model/todo.dart';
 
-class TodoList {
+enum TodoListChangeType {
+  Delete,
+  Insert,
+  Update,
+}
+
+class TodoListChangeInfo {
+  final int insertOrRemoveIndex;
+  final List<Todo> todoList;
+  final TodoListChangeType type;
+
+  const TodoListChangeInfo({
+    this.todoList = const <Todo>[],
+    this.insertOrRemoveIndex = -1,
+    this.type = TodoListChangeType.Update,
+  });
+}
+
+const emptyTodoListChangeInfo = TodoListChangeInfo();
+
+class TodoList extends ValueNotifier<TodoListChangeInfo> {
   final List<Todo> _todoList;
 
-  TodoList(this._todoList) {
+  TodoList(this._todoList) : super(emptyTodoListChangeInfo) {
     _sort();
   }
 
@@ -14,6 +37,12 @@ class TodoList {
   void add(Todo todo) {
     _todoList.add(todo);
     _sort();
+    int index = _todoList.indexOf(todo);
+    value = TodoListChangeInfo(
+      insertOrRemoveIndex: index,
+      type: TodoListChangeType.Insert,
+      todoList: list,
+    );
   }
 
   void remove(String id) {
@@ -23,11 +52,21 @@ class TodoList {
       return;
     }
     int index = _todoList.indexOf(todo);
+    List<Todo> clonedList = List.from(_todoList);
     _todoList.removeAt(index);
+    value = TodoListChangeInfo(
+      insertOrRemoveIndex: index,
+      type: TodoListChangeType.Delete,
+      todoList: clonedList,
+    );
   }
 
   void update(Todo todo) {
     _sort();
+    value = TodoListChangeInfo(
+      type: TodoListChangeType.Update,
+      todoList: list,
+    );
   }
 
   Todo? find(String id) {
