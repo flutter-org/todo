@@ -96,7 +96,6 @@ class Location {
         longitude = 0;
 }
 
-@JsonSerializable()
 class Todo {
   /// id
   String? id;

@@ -15,10 +15,12 @@ class NetworkClient {
 
   factory NetworkClient.instance() => _client;
 
+  Client client = Client();
+
   Future<String> login(String email, String password) async {
     Map result = {};
     try {
-      Response response = await post(
+      Response response = await client.post(
         Uri.parse('$baseUrl/login'),
         body: jsonEncode({
           'email': email,
