@@ -28,6 +28,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      showPerformanceOverlay: true,
+      checkerboardOffscreenLayers: true,
+      checkerboardRasterCacheImages: true,
       title: 'Todo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
