@@ -4,7 +4,7 @@ import 'package:todo/component/scroll_option_view.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/todo.dart';
-import 'package:todo/model/todo_list.dart';
+import 'package:todo/model/todo_list_notifier.dart';
 
 class ReporterPage extends StatefulWidget {
   const ReporterPage({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class ReporterPage extends StatefulWidget {
 }
 
 class _ReporterPageState extends State<ReporterPage> {
-  late final TodoList _todoList;
+  late final TodoListNotifier _notifier;
   int _finishedTodoCount = 0;
   int _delayedTodoCount = 0;
   final List<Todo> _todosOfThisMonth = [];
@@ -23,20 +23,21 @@ class _ReporterPageState extends State<ReporterPage> {
   @override
   void initState() {
     super.initState();
-    _todoList = context.read<TodoList>();
+    /// read
+    _notifier = context.read<TodoListNotifier>();
     _initTodosOfThisMonth();
-    _todoList.addListener(_updateData);
+    _notifier.addListener(_updateData);
   }
 
   @override
   void dispose() {
-    _todoList.removeListener(_updateData);
+    _notifier.removeListener(_updateData);
     super.dispose();
   }
 
   /// month:[1..12]
   void _initTodosOfThisMonth() {
-    for (Todo todo in _todoList.list) {
+    for (Todo todo in _notifier.list) {
       if (todo.date != null && todo.date!.month == currentMonth) {
         _todosOfThisMonth.add(todo);
         TodoStatus status = todo.status;
@@ -74,7 +75,7 @@ class _ReporterPageState extends State<ReporterPage> {
     if (changedTodo == null) {
       return;
     }
-    _todoList.update(todo);
+    _notifier.update(todo);
   }
 
   @override

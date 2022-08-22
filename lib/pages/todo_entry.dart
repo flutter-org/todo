@@ -5,7 +5,7 @@ import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/network_client.dart';
 import 'package:todo/model/todo.dart';
-import 'package:todo/model/todo_list.dart';
+import 'package:todo/model/todo_list_notifier.dart';
 import 'package:todo/pages/about.dart';
 import 'package:todo/pages/calendar.dart';
 import 'package:todo/pages/reporter.dart';
@@ -23,7 +23,7 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
   late int currentIndex;
   late List<Widget> pages;
   GlobalKey<TodoListPageState> todoListPageState = GlobalKey<TodoListPageState>();
-  late TodoList _todoList;
+  late TodoListNotifier _notifier;
   late String userKey;
 
   @override
@@ -38,7 +38,7 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
     super.didChangeDependencies();
     TodoEntryArgument arguments = ModalRoute.of(context)?.settings.arguments as TodoEntryArgument;
     userKey = arguments.userKey;
-    _todoList = TodoList(userKey);
+    _notifier = TodoListNotifier(userKey);
     pages = [
       const TodoListPage(),
       const CalendarPage(),
@@ -58,11 +58,11 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // 应用进入后台时的回调
     if (state == AppLifecycleState.paused) {
-      NetworkClient.instance().uploadList(_todoList.list, userKey);
+      NetworkClient.instance().uploadList(_notifier.list, userKey);
     }
     // 应用进到前台时的回调
     if (state == AppLifecycleState.resumed) {
-      _todoList.syncWithNetwork();
+      _notifier.syncWithNetwork();
     }
     super.didChangeAppLifecycleState(state);
   }
@@ -119,8 +119,9 @@ class _TodoEntryPageState extends State<TodoEntryPage> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TodoList>.value(
-      value: _todoList,
+    /// ChangeNotifierProvider
+    return ChangeNotifierProvider<TodoListNotifier>.value(
+      value: _notifier,
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           onTap: _onTabChange,

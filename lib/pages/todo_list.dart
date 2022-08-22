@@ -5,7 +5,7 @@ import 'package:todo/component/delete_todo_dialog.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/todo.dart';
-import 'package:todo/model/todo_list.dart';
+import 'package:todo/model/todo_list_notifier.dart';
 import 'package:todo/res/assets_res.dart';
 
 class TodoListPage extends StatefulWidget {
@@ -16,18 +16,19 @@ class TodoListPage extends StatefulWidget {
 }
 
 class TodoListPageState extends State<TodoListPage> {
-  late TodoList todoList;
+  late TodoListNotifier _notifier;
   GlobalKey<AnimatedListState> animatedListKey = GlobalKey<AnimatedListState>();
 
   @override
   void initState() {
     super.initState();
-    todoList = context.read<TodoList>();
-    todoList.addListener(_updateTodoList);
+    /// read
+    _notifier = context.read<TodoListNotifier>();
+    _notifier.addListener(_updateTodoList);
   }
 
   void _updateTodoList() {
-    TodoListChangeInfo changeInfo = todoList.value;
+    TodoListChangeInfo changeInfo = _notifier.value;
     if (changeInfo.type == TodoListChangeType.Update) {
       setState(() {});
     } else if (changeInfo.type == TodoListChangeType.Delete) {
@@ -48,12 +49,12 @@ class TodoListPageState extends State<TodoListPage> {
 
   @override
   void dispose() {
-    todoList.removeListener(_updateTodoList);
+    _notifier.removeListener(_updateTodoList);
     super.dispose();
   }
 
   void addTodo(Todo todo) {
-    todoList.add(todo);
+    _notifier.add(todo);
   }
 
   void removeTodo(Todo todo) async {
@@ -65,7 +66,7 @@ class TodoListPageState extends State<TodoListPage> {
           );
         });
     if (result) {
-      todoList.remove(todo.id!);
+      _notifier.remove(todo.id!);
     }
   }
 
@@ -77,10 +78,10 @@ class TodoListPageState extends State<TodoListPage> {
         title: const Text('清单'),
       ),
       body: RefreshIndicator(
-        onRefresh: () => todoList.syncWithNetwork(),
+        onRefresh: () => _notifier.syncWithNetwork(),
         child: AnimatedList(
             key: animatedListKey,
-            initialItemCount: todoList.length,
+            initialItemCount: _notifier.length,
             itemBuilder: (BuildContext context, int index, Animation<double> animation) {
               return SlideTransition(
                 position: Tween<Offset>(
@@ -88,7 +89,7 @@ class TodoListPageState extends State<TodoListPage> {
                   end: Offset.zero,
                 ).animate(animation),
                 child: TodoItem(
-                  todo: todoList.list[index],
+                  todo: _notifier.list[index],
                   onTap: (Todo todo) async {
                     await Navigator.of(context).pushNamed(
                       EDIT_TODO_PAGE_URL,
@@ -97,15 +98,15 @@ class TodoListPageState extends State<TodoListPage> {
                         todo: todo,
                       ),
                     );
-                    todoList.update(todo);
+                    _notifier.update(todo);
                   },
                   onFinished: (Todo todo) {
                     todo.isFinished = !todo.isFinished!;
-                    todoList.update(todo);
+                    _notifier.update(todo);
                   },
                   onStar: (Todo todo) {
                     todo.isStar = !todo.isStar!;
-                    todoList.update(todo);
+                    _notifier.update(todo);
                   },
                   onLongPress: removeTodo,
                 ),

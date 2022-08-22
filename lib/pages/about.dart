@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/component/image_hero.dart';
-import 'package:todo/component/todo_list_inherited_widget.dart';
-import 'package:todo/component/user_key_inherited_widget.dart';
 import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/model/login_center.dart';
 import 'package:todo/model/network_client.dart';
-import 'package:todo/model/todo_list.dart';
+import 'package:todo/model/todo_list_notifier.dart';
 import 'package:todo/res/assets_res.dart';
 
 class AboutPage extends StatefulWidget {
@@ -18,9 +16,14 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
+  void _onClickLogout() {
+    Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
+  }
+
   @override
   Widget build(BuildContext context) {
-    TodoList? todoList = context.watch<TodoList>();
+    /// watch
+    TodoListNotifier? notifier = context.watch<TodoListNotifier>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -86,6 +89,7 @@ class _AboutPageState extends State<AboutPage> {
                       bottom: 12,
                     ),
                     child: Consumer<String>(
+                      /// Consumer
                       builder: (_, String userKey, __) {
                         return TextButton(
                           style: ButtonStyle(
@@ -93,11 +97,11 @@ class _AboutPageState extends State<AboutPage> {
                           ),
                           onPressed: () async {
                             await NetworkClient.instance().uploadList(
-                              todoList!.list,
+                              notifier!.list,
                               userKey,
                             );
                             await LoginCenter.instance().logout();
-                            Navigator.of(context).pushReplacementNamed(LOGIN_PAGE_URL);
+                            _onClickLogout();
                           },
                           child: const Text(
                             '退出登录',

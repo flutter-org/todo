@@ -25,12 +25,12 @@ class TodoListChangeInfo {
 
 const emptyTodoListChangeInfo = TodoListChangeInfo();
 
-class TodoList extends ValueNotifier<TodoListChangeInfo> {
+class TodoListNotifier extends ValueNotifier<TodoListChangeInfo> {
   final List<Todo> _todoList = [];
   DbProvider? _dbProvider;
   final String userKey;
 
-  TodoList(this.userKey) : super(emptyTodoListChangeInfo) {
+  TodoListNotifier(this.userKey) : super(emptyTodoListChangeInfo) {
     _dbProvider = DbProvider(userKey);
     _dbProvider!.loadFromDataBase().then((List<Todo> todoList) {
       if (todoList.isNotEmpty) {

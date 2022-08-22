@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:todo/model/todo_list.dart';
+import 'package:todo/model/todo_list_notifier.dart';
 
 class TodoListInheritedWidget extends InheritedWidget {
-  final TodoList? todoList;
+  final TodoListNotifier? notifier;
 
   const TodoListInheritedWidget({
     Key? key,
-    this.todoList,
+    this.notifier,
     required Widget child,
   }) : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(TodoListInheritedWidget oldWidget) {
-    return oldWidget.todoList == todoList;
+    return oldWidget.notifier == notifier;
   }
 
   static TodoListInheritedWidget? of(BuildContext context) =>

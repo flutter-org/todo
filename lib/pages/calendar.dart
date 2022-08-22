@@ -5,7 +5,7 @@ import 'package:todo/const/route_argument.dart';
 import 'package:todo/const/route_url.dart';
 import 'package:todo/extension/date_time.dart';
 import 'package:todo/model/todo.dart';
-import 'package:todo/model/todo_list.dart';
+import 'package:todo/model/todo_list_notifier.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  late TodoList _todoList;
+  late TodoListNotifier _notifier;
   late DateTime _initialDay;
   final Map<DateTime, List<Todo>> _date2TodoMap = {};
   final List<Todo> _todosToShow = [];
@@ -23,15 +23,16 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   void initState() {
     super.initState();
-    _todoList = context.read<TodoList>();
+    /// read
+    _notifier = context.read<TodoListNotifier>();
     _initDate2TodoMap();
-    _todoList.addListener(_updateData);
+    _notifier.addListener(_updateData);
     _initialDay = DateTime.now().dayTime;
   }
 
   @override
   void dispose() {
-    _todoList.removeListener(_updateData);
+    _notifier.removeListener(_updateData);
     super.dispose();
   }
 
@@ -44,7 +45,7 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   void _initDate2TodoMap() {
-    for (var todo in _todoList.list) {
+    for (var todo in _notifier.list) {
       _date2TodoMap.putIfAbsent(todo.date!, () => []);
       _date2TodoMap[todo.date]!.add(todo);
     }
@@ -62,7 +63,7 @@ class _CalendarPageState extends State<CalendarPage> {
     if (changedTodo == null) {
       return;
     }
-    _todoList.update(todo);
+    _notifier.update(todo);
   }
 
   @override
